@@ -44,14 +44,26 @@ export default function RequestsReceived() {
     }
   };
 
-  const aceptar = async (id: string) => {
-    await updateStatus.execute(id, "aceptado");
-    loadRequests();
+  const aceptar = async (Rid: string, pet_id: number) => {
+    try {
+
+      await updateStatus.execute(Rid, "aceptado");
+
+      await repository.updateStatusPet(pet_id, { adopted: true });
+      loadRequests();
+    }
+    catch (error) {
+      console.error("Error al aceptar solicitud:", error);
+    }
   };
 
   const rechazar = async (id: string) => {
+     try {
     await updateStatus.execute(id, "rechazado");
     loadRequests();
+   } catch (error) {
+      console.error("Error al rechazar solicitud:", error);
+    }
   };
 
   const verSolicitud = (request: any) => {
@@ -88,7 +100,7 @@ export default function RequestsReceived() {
             {item.estado === "en_proceso" && (
               <div className="flex space-x-3 mt-4">
                 <button
-                  onClick={(e) => { e.stopPropagation(); aceptar(item.id); }}
+                  onClick={(e) => { e.stopPropagation(); aceptar(item.id, item.pet_id); }}
                   className="flex-1 bg-green-300 py-2 rounded font-bold text-black"
                 >
                   Aceptar
