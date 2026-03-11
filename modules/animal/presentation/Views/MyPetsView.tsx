@@ -2,16 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { getUserPets } from "../../../user/application/getUserPets";
 import { uploadImagesPet } from "../../application/uploadImagesPet";
 import DeletePetModal from "../components/DeletePetModal";
-import { getUserPets } from "@/modules/user/application/getUserPets";
 
 export default function MyPetsScreen() {
+
   const [pets, setPets] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    loadPets();
+  }, []);
 
   const loadPets = async () => {
     try {
@@ -21,10 +26,6 @@ export default function MyPetsScreen() {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    loadPets();
-  }, []);
 
   const openDeleteModal = (id: string) => {
     setSelectedPetId(id);
@@ -90,8 +91,8 @@ export default function MyPetsScreen() {
       </div>
 
       <button
-        className="fixed bottom-5 right-5 bg-blue-600 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl shadow-lg"
         onClick={() => router.push("/pet/addpet")}
+        className="fixed bottom-[60px] right-5 w-[60px] h-[60px] bg-[#8cb56e] rounded-full text-white text-[30px] flex items-center justify-center"
       >
         +
       </button>
@@ -102,6 +103,7 @@ export default function MyPetsScreen() {
         petId={selectedPetId}
         onDeleted={loadPets}
       />
+
     </div>
   );
 }
