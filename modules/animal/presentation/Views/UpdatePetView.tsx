@@ -1,18 +1,20 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { updatePetUseCase } from "../../application/updatePet";
+import { PetSex, PetSize, PetType } from "../../domain/pet";
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { updatePetUseCase } from "@/modules/animal/application/updatePet";
-import { PetSex, PetSize, PetType } from "@/modules/animal/domain/pet";
+import { useEffect, useMemo, useState } from "react";
 import { saveS } from "../components/uploadImage";
 
-export default function UpdatePetWeb() {
+export default function UpdatePetsScreen() {
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const petParam = useMemo(() => {
-    const petStr = searchParams.get("pet");
-    return petStr ? JSON.parse(petStr) : null;
+    const pet = searchParams.get("pet");
+    return pet ? JSON.parse(pet) : null;
   }, [searchParams]);
 
   const [selectedPet, setSelectedPet] = useState<any>(null);
@@ -25,48 +27,87 @@ export default function UpdatePetWeb() {
   const [healthInfo, setHealthInfo] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<string[]>([]);
+  const [imagePage, setImagePage] = useState(0);
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
-  const [adopted, setAdopted] = useState(false);
 
   useEffect(() => {
-    if (!petParam) return;
-    setSelectedPet(petParam);
-    setType(petParam.type ?? "");
-    setName(petParam.name ?? "");
-    setSex(petParam.sex ?? "");
-    setAge(petParam.age ?? "");
-    setSize(petParam.size ?? "");
-    setBreed(petParam.breed ?? "");
-    setHealthInfo(petParam.health_info ?? "");
-    setDescription(petParam.description ?? "");
-    setPhone(petParam.phone ?? "");
-    setLocation(petParam.location ?? "");
-    setAdopted(petParam.adopted ?? false);
 
-    if (Array.isArray(petParam.image_url)) {
-      setImages(petParam.image_url);
-    } else if (typeof petParam.image_url === "string") {
-      try {
-        const parsed = JSON.parse(petParam.image_url);
-        setImages(Array.isArray(parsed) ? parsed : [petParam.image_url]);
-      } catch {
-        setImages([petParam.image_url]);
+    if (petParam) {
+
+      setSelectedPet(petParam);
+      setType(petParam.type ?? "");
+      setName(petParam.name ?? "");
+      setSex(petParam.sex ?? "");
+      setAge(petParam.age ?? "");
+      setSize(petParam.size ?? "");
+      setBreed(petParam.breed ?? "");
+      setHealthInfo(petParam.health_info ?? "");
+      setDescription(petParam.description ?? "");
+      setPhone(petParam.phone ?? "");
+      setLocation(petParam.location ?? "");
+
+      if (Array.isArray(petParam.image_url)) {
+        setImages(petParam.image_url);
+      } else if (typeof petParam.image_url === "string") {
+        try {
+
+          const parsed = JSON.parse(petParam.image_url);
+
+          if (Array.isArray(parsed)) {
+            setImages(parsed);
+          } else {
+            setImages([petParam.image_url]);
+          }
+
+        } catch {
+          setImages([petParam.image_url]);
+        }
       }
+
     }
+
   }, [petParam]);
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+  const clearFields = () => {
+
+    setType("");
+    setName("");
+    setSex("");
+    setAge("");
+    setSize("");
+    setBreed("");
+    setHealthInfo("");
+    setDescription("");
+    setPhone("");
+    setLocation("");
+    setImages([]);
+    setSelectedPet(null);
+
+  };
+
+  const pickImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const files = event.target.files;
+
     if (!files) return;
+
     const uris: string[] = [];
+
     for (let i = 0; i < files.length; i++) {
-      uris.push(URL.createObjectURL(files[i]));
+
+      const file = files[i];
+      const url = URL.createObjectURL(file);
+      uris.push(url);
+
     }
+
     setImages(uris);
+
   };
 
   const handleUpdatePet = async () => {
+
     if (!selectedPet) {
       alert("No hay mascota seleccionada");
       return;
@@ -78,22 +119,32 @@ export default function UpdatePetWeb() {
     }
 
     try {
+
       let imageUrl: string[] = [];
 
       for (const uri of images) {
+
         if (uri.startsWith("http")) {
+
           imageUrl.push(uri);
+
         } else {
+
           const uploaded = await saveS({ uri });
+
           if (!uploaded) {
             alert("Error al subir imagen");
             return;
           }
+
           imageUrl.push(uploaded);
+
         }
+
       }
 
       await updatePetUseCase(selectedPet.id, {
+
         type: type as PetType,
         name: name.trim(),
         sex: sex as PetSex,
@@ -105,181 +156,253 @@ export default function UpdatePetWeb() {
         phone: phone.replace(/[^0-9]/g, ""),
         location: location.trim(),
         image_url: JSON.stringify(imageUrl),
-        adopted,
+
       });
 
       alert("Mascota actualizada ✨");
+
+      clearFields();
       router.back();
+
     } catch (error: any) {
-      alert("Error: " + error.message);
+
+      alert(error.message);
+
     }
+
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-5">
-      <header className="bg-green-400 text-white rounded-xl p-4 mb-6 flex items-center justify-center gap-2">
-        <span className="text-2xl font-bold">Animaland</span>
-        <svg
-          className="w-8 h-8"
-          fill="currentColor"
-          viewBox="0 0 24 24"
+
+    <div className="min-h-screen bg-[#FDF8F0] pb-10">
+
+      {/* HEADER */}
+
+      <div className="bg-[#B7C979] pt-10 pb-5 mb-5 flex justify-center items-center relative">
+
+        <button
+          onClick={() => router.back()}
+          className="absolute left-4 top-12 text-white text-2xl"
         >
-          <path d="M5 20l14-8-14-8v16z" />
-        </svg>
-      </header>
+          ←
+        </button>
 
-      <div className="flex items-center mb-6 gap-3">
-        <label>¿Adoptada?</label>
-        <input
-          type="checkbox"
-          checked={adopted}
-          onChange={() => setAdopted(!adopted)}
-          className="w-5 h-5 accent-green-500"
-        />
+        <div className="flex items-center">
+          <span className="text-white text-3xl font-bold mr-2">
+            Animaland
+          </span>
+          🐶
+        </div>
+
       </div>
 
-      <div className="flex gap-3 overflow-x-auto mb-4">
-        {images.map((uri, i) => (
-          <img
-            key={i}
-            src={uri}
-            alt={`Imagen ${i + 1}`}
-            className="w-48 h-48 object-cover rounded-lg"
+      <div className="max-w-xl mx-auto px-4">
+
+        {/* IMAGENES */}
+
+        {images.length > 0 && (
+
+          <>
+            <div className="overflow-x-auto flex gap-4 mb-3">
+
+              {images.map((uri, idx) => (
+
+                <img
+                  key={idx}
+                  src={uri}
+                  className="w-[90%] rounded-2xl"
+                />
+
+              ))}
+
+            </div>
+
+            <div className="flex justify-center mb-3">
+
+              {images.map((_, i) => (
+
+                <div
+                  key={i}
+                  className={`w-2 h-2 rounded-full mx-1 ${
+                    imagePage === i ? "bg-black" : "bg-gray-300"
+                  }`}
+                />
+
+              ))}
+
+            </div>
+          </>
+        )}
+
+        {/* BOTON IMAGEN */}
+
+        <label className="bg-[#D4B37A] text-white font-semibold p-3 rounded-xl flex justify-center mb-4 cursor-pointer">
+
+          Insertar Imagen
+
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            className="hidden"
+            onChange={pickImage}
           />
-        ))}
-      </div>
 
-      <input
-        type="file"
-        multiple
-        accept="image/*"
-        onChange={handleImageChange}
-        className="mb-4"
-      />
+        </label>
 
-      <section className="mb-6">
-        <h2 className="text-lg font-bold mb-2 text-center">Información general</h2>
+        {/* INFORMACION */}
 
-        <label className="block text-sm font-medium mb-1">Tipo de animal</label>
-        <div className="flex gap-2 mb-3">
+        <h2 className="text-center font-bold text-lg mb-2">
+          Información general
+        </h2>
+
+        <p className="text-xs text-gray-500 mb-1">Tipo de animal</p>
+
+        <div className="flex justify-around mb-3">
+
           {["perro", "gato"].map((t) => (
+
             <button
               key={t}
               onClick={() => setType(t)}
-              className={`px-3 py-1 rounded-lg border ${
-                type === t ? "bg-yellow-200 border-yellow-400" : "bg-white border-gray-300"
+              className={`px-4 py-2 border rounded-lg font-bold capitalize ${
+                type === t
+                  ? "bg-[#E5DCCC] border-[#DAC193]"
+                  : "bg-white border-[#DAC193]"
               }`}
             >
               {t}
             </button>
+
           ))}
+
         </div>
 
-        <label className="block text-sm font-medium mb-1">Nombre</label>
         <input
-          type="text"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border rounded p-2 mb-3"
         />
 
-        <label className="block text-sm font-medium mb-1">Sexo</label>
-        <div className="flex gap-2 mb-3">
+        <p className="text-xs text-gray-500 mb-1">Sexo</p>
+
+        <div className="flex justify-around mb-3">
+
           {["macho", "hembra"].map((s) => (
+
             <button
               key={s}
               onClick={() => setSex(s)}
-              className={`px-3 py-1 rounded-lg border ${
-                sex === s ? "bg-yellow-200 border-yellow-400" : "bg-white border-gray-300"
+              className={`px-4 py-2 border rounded-lg font-bold capitalize ${
+                sex === s
+                  ? "bg-[#E5DCCC] border-[#DAC193]"
+                  : "bg-white border-[#DAC193]"
               }`}
             >
               {s}
             </button>
+
           ))}
+
         </div>
 
-        <label className="block text-sm font-medium mb-1">Edad</label>
         <input
-          type="text"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          placeholder="Edad"
           value={age}
           onChange={(e) => setAge(e.target.value)}
-          className="w-full border rounded p-2 mb-3"
         />
 
-        <label className="block text-sm font-medium mb-1">Tamaño</label>
-        <div className="flex gap-2 mb-3">
+        <p className="text-xs text-gray-500 mb-1">Tamaño</p>
+
+        <div className="flex justify-around mb-3">
+
           {["pequeño", "mediano", "grande"].map((s) => (
+
             <button
               key={s}
               onClick={() => setSize(s)}
-              className={`px-3 py-1 rounded-lg border ${
-                size === s ? "bg-yellow-200 border-yellow-400" : "bg-white border-gray-300"
+              className={`px-4 py-2 border rounded-lg font-bold capitalize ${
+                size === s
+                  ? "bg-[#E5DCCC]"
+                  : "bg-white"
               }`}
             >
               {s}
             </button>
+
           ))}
+
         </div>
 
-        <label className="block text-sm font-medium mb-1">Raza</label>
         <input
-          type="text"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          placeholder="Raza"
           value={breed}
           onChange={(e) => setBreed(e.target.value)}
-          className="w-full border rounded p-2 mb-3"
         />
-      </section>
 
-      <section className="mb-6">
-        <h2 className="text-lg font-bold mb-2 text-center">Salud</h2>
+        <h2 className="text-center font-bold text-lg mb-2">
+          Salud
+        </h2>
+
         <textarea
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 h-[100px]"
+          placeholder="Información de salud"
           value={healthInfo}
           onChange={(e) => setHealthInfo(e.target.value)}
-          className="w-full border rounded p-2 mb-3 h-24"
         />
-      </section>
 
-      <section className="mb-6">
-        <h2 className="text-lg font-bold mb-2 text-center">Descripción</h2>
+        <h2 className="text-center font-bold text-lg mb-2">
+          Descripción
+        </h2>
+
         <textarea
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 h-[100px]"
+          placeholder="Descripción"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded p-2 mb-3 h-24"
         />
-      </section>
 
-      <section className="mb-6">
-        <h2 className="text-lg font-bold mb-2 text-center">Contacto</h2>
+        <h2 className="text-center font-bold text-lg mb-2">
+          Contacto
+        </h2>
+
         <input
-          type="text"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
           placeholder="Teléfono"
           value={phone}
-          onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ""))}
-          className="w-full border rounded p-2 mb-3"
+          maxLength={10}
+          onChange={(e) =>
+            setPhone(e.target.value.replace(/[^0-9]/g, ""))
+          }
         />
+
         <input
-          type="text"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
           placeholder="Ubicación"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="w-full border rounded p-2 mb-3"
         />
-      </section>
 
-      <div className="flex gap-4 justify-center mb-6">
         <button
           onClick={handleUpdatePet}
-          className="bg-green-400 text-white px-6 py-3 rounded-lg font-semibold"
+          className="w-full bg-[#B7C979] text-white p-3 rounded-xl font-semibold mt-3"
         >
           Actualizar
         </button>
+
         <button
           onClick={() => router.back()}
-          className="bg-red-400 text-white px-6 py-3 rounded-lg font-semibold"
+          className="w-full bg-[#E8B4B4] text-white p-3 rounded-xl font-semibold mt-3"
         >
           Cancelar
         </button>
+
       </div>
+
     </div>
   );
+
 }
