@@ -60,6 +60,7 @@ export default function CatalogView() {
   }, []);
 
   const adoptedPets = pets.filter(p => p.adopted);
+
   const staticBanners: BannerItem[] = [
     { type: "static", image: "/images/D.png" },
     { type: "static", image: "/images/Cat.jpeg" },
@@ -69,7 +70,10 @@ export default function CatalogView() {
   const adoptedBanners: BannerItem[] = adoptedPets.map(p => {
     let firstImage = "";
     try {
-      const arr = typeof p.image_url === "string" ? JSON.parse(p.image_url) : p.image_url;
+      const arr =
+        typeof p.image_url === "string"
+          ? JSON.parse(p.image_url)
+          : p.image_url;
       firstImage = Array.isArray(arr) ? arr[0] : p.image_url || "";
     } catch {
       firstImage = p.image_url || "";
@@ -96,17 +100,29 @@ export default function CatalogView() {
 
       if (filters.adopted && !p.adopted) return false;
       if (!filters.adopted && p.adopted) return false;
-      if (filters.type.length && !filters.type.map(f => f.toLowerCase()).includes((p.type ?? "").toLowerCase())) return false;
-      if (filters.sex.length && !filters.sex.map(f => f.toLowerCase()).includes((p.sex ?? "").toLowerCase())) return false;
-      if (filters.size.length && !filters.size.map(f => f.toLowerCase()).includes((p.size ?? "").toLowerCase())) return false;
+      if (
+        filters.type.length &&
+        !filters.type.map(f => f.toLowerCase()).includes((p.type ?? "").toLowerCase())
+      )
+        return false;
+      if (
+        filters.sex.length &&
+        !filters.sex.map(f => f.toLowerCase()).includes((p.sex ?? "").toLowerCase())
+      )
+        return false;
+      if (
+        filters.size.length &&
+        !filters.size.map(f => f.toLowerCase()).includes((p.size ?? "").toLowerCase())
+      )
+        return false;
 
       return true;
     });
   }, [pets, search, filters]);
 
   const chunks: Pet[][] = [];
-  for (let i = 0; i < filteredPets.length; i += 3) {
-    chunks.push(filteredPets.slice(i, i + 3));
+  for (let i = 0; i < filteredPets.length; i += 6) {
+    chunks.push(filteredPets.slice(i, i + 6));
   }
 
   const renderPet = (pet: Pet) => {
@@ -119,8 +135,6 @@ export default function CatalogView() {
         if (!Array.isArray(images)) images = [pet.image_url];
       } else if (Array.isArray(pet.image_url)) {
         images = pet.image_url;
-      } else {
-        images = [];
       }
     } catch {
       images = pet.image_url ? [pet.image_url] : [];
@@ -129,9 +143,9 @@ export default function CatalogView() {
     return (
       <div
         key={pet.id}
-        className={`w-[180px] p-2 rounded-2xl text-center cursor-pointer relative transition-transform hover:scale-105 ${
-          isAdopted ? "bg-gray-200" : "bg-gray-300 hover:bg-gray-400"
-        }`}
+        className={`w-[250px] p-2 rounded-[15px] text-center cursor-pointer relative transition-all duration-300 hover:scale-105 shadow-md 
+        ${isAdopted ? "bg-[#F5F5F5] hover:bg-[#E0E0E0]" :  "bg-[#EAEAEA] hover:bg-[#D9D9D9]"}
+        `}
         onClick={() =>
           router.push(`/pet/profileanimal?pet=${encodeURIComponent(JSON.stringify(pet))}`)
         }
@@ -145,20 +159,20 @@ export default function CatalogView() {
             height={IMAGE_SIZE}
             style={{
               objectFit: "cover",
-              borderRadius: 20,
+              borderRadius: 15,
               width: "100%",
-              height: "auto",
               aspectRatio: 1,
               opacity: isAdopted ? 0.4 : 1,
             }}
           />
         )}
-        <div className="font-bold mt-2">{pet.name}</div>
-        <div className="text-sm">{pet.sex}</div>
-        <div className="text-sm">{pet.size}</div>
+
+        <div className="font-semibold mt-2 text-[#333]">{pet.name}</div>
+        <div className="text-sm text-[#666]">{pet.sex}</div>
+        <div className="text-sm text-[#666]">{pet.size}</div>
 
         {isAdopted && (
-          <div className="absolute top-1 left-1 bg-yellow-400 px-2 py-1 rounded-lg text-xs font-bold">
+          <div className="absolute top-1 left-1 bg-[#FFD700] px-2 py-1 rounded-full text-[10px] font-bold text-black">
             ¡{pet.name} ha sido adoptado!
           </div>
         )}
@@ -168,45 +182,50 @@ export default function CatalogView() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-[80vh]">
+      <div className="flex justify-center items-center h-[80vh] bg-[#FDF8F0]">
         Cargando...
       </div>
     );
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center bg-yellow-400 p-4 rounded-lg mb-4">
+    <div className="p-4 bg-[#FDF8F0]">
+      <div className="flex justify-between items-center bg-[#B7C979] p-4 mb-4">
         <h2 className="text-white text-xl font-bold flex items-center gap-2">
-          Animaland <span>🐶</span>
+          Animaland 🐶
         </h2>
-        <button onClick={() => setModalOpen(true)}>☰</button>
+        <button onClick={() => setModalOpen(true)} className="text-white text-2xl">
+          ☰
+        </button>
       </div>
 
-      <div className="flex items-center border border-yellow-200 rounded-lg p-2 mb-4 bg-yellow-50">
+      <div className="flex items-center border border-[#7E6950] rounded-[10px] px-4 py-2 mb-4 bg-[#E5DCCC]">
         <input
           type="text"
-          placeholder="Buscar por nombre, tipo, sexo o tamaño"
+          placeholder="Buscar"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 h-10 px-2 outline-none bg-transparent"
+          className="flex-1 h-10 bg-transparent outline-none text-[#333] placeholder:text-[#999]"
         />
-        <button className="mx-2">🔍</button>
-        <button onClick={() => setFilterOpen(true)}>⚙️</button>
+        <button className="mx-2 text-[#5B4000]">🔍</button>
+        <button onClick={() => setFilterOpen(true)} className="text-[#D09100]">
+          ⚙️
+        </button>
       </div>
 
-      <div className="flex overflow-x-scroll gap-3 mb-4">
+      <div className="flex overflow-x-auto gap-3 mb-4">
         {bannerImages.map((item, idx) => (
           <div key={idx} className="min-w-[300px] relative rounded-2xl overflow-hidden">
             <Image
               loader={supabaseLoader}
               src={item.image}
-              alt={item.name || "banner"}
+              alt="banner"
               width={300}
               height={BANNER_HEIGHT}
               style={{ objectFit: "cover", borderRadius: 20 }}
             />
+
             {item.type === "adopted" && (
-              <div className="absolute bottom-2 right-2 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
+              <div className="absolute bottom-2 right-2 bg-[#22c55e] text-white px-3 py-1 rounded-full text-xs font-bold">
                 ¡ {item.name} ahora tiene una familia! 🐾
               </div>
             )}
@@ -226,6 +245,7 @@ export default function CatalogView() {
         user={user}
         setUser={setUser}
       />
+
       <FilterModal
         visible={filterOpen}
         onClose={() => setFilterOpen(false)}
