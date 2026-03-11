@@ -41,7 +41,7 @@ export default function SignUp() {
       });
 
       alert("Cuenta creada correctamente");
-      router.replace("/catalog");
+      router.replace("/pet");
     } catch (err: any) {
       alert(err.message);
     } finally {

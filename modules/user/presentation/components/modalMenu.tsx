@@ -16,7 +16,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
     setUser(null);
     onUpdate?.();
     onClose();
-    router.replace("/catalog");
+    router.replace("/pet");
   };
 
   if (!visible) return null;

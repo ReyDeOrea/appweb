@@ -1,7 +1,8 @@
+"use client"
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { validateLoginData } from "../../application/valideteLoginData";
 import { loginUser } from "../../application/loginUser";
+import { useRouter } from "next/navigation";
 
 
 export default function LoginForm() {
@@ -15,7 +16,7 @@ export default function LoginForm() {
       setLoading(true);
       validateLoginData(username, password);
       await loginUser(username, password);
-      router.replace("/catalog");
+      router.replace("/pet");
     } catch (err: any) {
       alert(err.message);
     } finally {
