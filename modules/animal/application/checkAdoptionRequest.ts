@@ -1,7 +1,8 @@
 import { Pet } from "../domain/pet";
 
 export function checkAdoptionRequest(userId: string, petId: string): boolean {
-  if (typeof window === "undefined") return false;
+  if (typeof window === "undefined") 
+    return false;
 
   const data = localStorage.getItem(`adoptionRequest_${userId}`);
   const requests: Pet[] = data ? JSON.parse(data) : [];
