@@ -32,96 +32,62 @@ export default function MyPetsScreen() {
     setModalVisible(true);
   };
 
+  const chunks: any[][] = [];
+  for (let i = 0; i < pets.length; i += 2) {
+    chunks.push(pets.slice(i, i + 2));
+  }
+
   return (
-    <div className="min-h-screen bg-[#FDF8F0] p-3 relative">
-
-      <div className="w-full h-[100px] pt-7 bg-[#B7C979] flex items-center justify-center mb-3 relative">
-
-        <button
-          onClick={() => router.back()}
-          className="absolute left-4 top-10 text-white text-2xl"
-        >
-          ←
-        </button>
-
-        <div className="flex items-center gap-1">
-          <span className="text-white font-bold text-[25px]">
-            Animaland
-          </span>
-          🐶
-        </div>
-
+    <div className="min-h-screen bg-[#FDF8F0] relative">
+      <div className="w-full h-16 bg-[#B7C979] flex items-center justify-center mb-4">
+        <h1 className="text-white font-bold text-2xl">Animaland</h1>
       </div>
 
-
-      {pets.length === 0 && (
-        <p className="text-center mt-5">
-          No tienes mascotas registradas
-        </p>
-      )}
-
-      <div className="space-y-3 pb-32">
-
-        {pets.map((item, index) => {
-
-          const images = uploadImagesPet(item.image_url);
-          const isAdopted = item.adopted === true;
-
-          return (
-            <div
-              key={item?.id ? item.id : index}
-              className={`bg-white p-3 rounded-xl shadow ${isAdopted ? "opacity-50" : ""
-                }`}
-            >
-
-              {images.length > 0 && (
-                <img
-                  src={images[0]}
-                  className={`w-full h-[150px] object-cover rounded-xl ${isAdopted ? "opacity-50" : ""
-                    }`}
-                />
-              )}
-
-              <p className="font-bold text-[16px] mt-1">
-                {item.name}
-              </p>
-
-              {isAdopted && (
-                <p className="text-green-600 font-bold mt-1">
-                  🐾 Esta mascota ya fue adoptada
-                </p>
-              )}
-
-              {!isAdopted && (
-                <div className="flex justify-between mt-3">
-
-                  <button
-                    className="bg-[#ffdfba] px-3 py-2 rounded-lg flex-1 mr-1 font-bold"
-                    onClick={() =>
-                      router.push(
-                        `/pet/updatepet?pet=${encodeURIComponent(
-                          JSON.stringify(item)
-                        )}`
-                      )
-                    }
+      <div className="px-4 pb-32">
+        {pets.length === 0 ? (
+          <p className="text-center mt-10 text-gray-500">No tienes mascotas registradas</p>
+        ) : (
+          chunks.map((row, rowIndex) => (
+            <div key={rowIndex} className="flex flex-wrap justify-center gap-6 mb-8">
+              {row.map((item) => {
+                const images = uploadImagesPet(item.image_url);
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-white p-5 rounded-lg shadow-md w-[48%] flex-shrink-0 flex flex-col justify-between"
                   >
-                    Editar
-                  </button>
+                    {images.length > 0 && (
+                      <img
+                        src={images[0]}
+                        alt={item.name}
+                        className="w-full h-96 sm:h-96 md:h-96 object-cover rounded-lg bg-[#F5F5F5] mb-4"
+                      />
+                    )}
+                    <h2 className="font-bold text-xl text-black mb-3">{item.name}</h2>
 
-                  <button
-                    className="bg-[#d3a9a9] px-3 py-2 rounded-lg flex-1 ml-1 font-bold"
-                    onClick={() => openDeleteModal(item.id)}
-                  >
-                    Eliminar
-                  </button>
+                    <div className="flex gap-3 mt-auto">
+                      <button
+                        className="bg-[#F3D58D] flex-1 py-3 rounded-lg font-bold hover:bg-[#e0c37b] transition-colors text-black"
+                        onClick={() =>
+                          router.push(`/pet/updatepet?pet=${encodeURIComponent(JSON.stringify(item))}`)
+                        }
+                      >
+                        Editar
+                      </button>
 
-                </div>
-              )}
-
+                      <button
+                        className="bg-[#B7413E] flex-1 py-3 rounded-lg font-bold hover:bg-[#9b332f] transition-colors text-black"
+                        onClick={() => openDeleteModal(item.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-
+          ))
+        )}
       </div>
 
       <button
