@@ -144,8 +144,8 @@ export default function CatalogView() {
       <div
         key={pet.id}
         className={`w-[250px] p-2 rounded-[15px] text-center cursor-pointer relative transition-all duration-300 hover:scale-105 shadow-md 
-        ${isAdopted ? "bg-[#F5F5F5] hover:bg-[#E0E0E0]" :  "bg-[#EAEAEA] hover:bg-[#D9D9D9]"}
-        `}
+        ${isAdopted ? "bg-[#F5F5F5] hover:bg-[#E0E0E0]" : "bg-[#EAEAEA] hover:bg-[#D9D9D9]"}
+        flex-shrink-0`}
         onClick={() =>
           router.push(`/pet/profileanimal?pet=${encodeURIComponent(JSON.stringify(pet))}`)
         }
@@ -188,7 +188,7 @@ export default function CatalogView() {
     );
 
   return (
-    <div className="p-4 bg-[#FDF8F0]">
+    <div className="p-4 sm:p-6 md:p-8 bg-[#FDF8F0] max-w-full">
       <div className="flex justify-between items-center bg-[#B7C979] p-4 mb-4">
         <h2 className="text-white text-xl font-bold flex items-center gap-2">
           Animaland 🐶
@@ -198,34 +198,43 @@ export default function CatalogView() {
         </button>
       </div>
 
-      <div className="flex items-center border border-[#7E6950] rounded-[10px] px-4 py-2 mb-4 bg-[#E5DCCC]">
+      <div className="flex flex-wrap items-center border border-[#7E6950] rounded-[10px] px-4 py-2 mb-4 bg-[#E5DCCC] gap-2">
         <input
           type="text"
           placeholder="Buscar"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 h-10 bg-transparent outline-none text-[#333] placeholder:text-[#999]"
+          className="flex-1 min-w-[150px] h-10 bg-transparent outline-none text-[#333] placeholder:text-[#999]"
         />
-        <button className="mx-2 text-[#5B4000]">🔍</button>
-        <button onClick={() => setFilterOpen(true)} className="text-[#D09100]">
+        <button className="text-[#5B4000] h-10 px-3">🔍</button>
+        <button onClick={() => setFilterOpen(true)} className="text-[#D09100] h-10 px-3">
           ⚙️
         </button>
       </div>
 
-      <div className="flex overflow-x-auto gap-3 mb-4">
+      <div className="flex overflow-x-auto gap-3 mb-6 p-4 bg-[#FFF8E7] rounded-2xl shadow-lg border border-[#D9C9A3]">
         {bannerImages.map((item, idx) => (
-          <div key={idx} className="min-w-[300px] relative rounded-2xl overflow-hidden">
+          <div
+            key={idx}
+            className="min-w-[300px] flex-shrink-0 relative rounded-2xl overflow-hidden shadow-md transition-transform duration-300 flex items-center justify-center bg-[#FDF8F0]"
+            style={{ height: BANNER_HEIGHT }}
+          >
             <Image
               loader={supabaseLoader}
               src={item.image}
               alt="banner"
               width={300}
               height={BANNER_HEIGHT}
-              style={{ objectFit: "cover", borderRadius: 20 }}
+              style={{
+                objectFit: "contain",
+                borderRadius: 20,
+                width: "100%",
+                height: "100%",
+              }}
             />
 
             {item.type === "adopted" && (
-              <div className="absolute bottom-2 right-2 bg-[#22c55e] text-white px-3 py-1 rounded-full text-xs font-bold">
+              <div className="absolute bottom-2 right-2 bg-[#22c55e] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
                 ¡ {item.name} ahora tiene una familia! 🐾
               </div>
             )}
@@ -234,7 +243,10 @@ export default function CatalogView() {
       </div>
 
       {chunks.map((row, idx) => (
-        <div key={idx} className="flex justify-around mb-4">
+        <div
+          key={idx}
+          className="flex flex-wrap justify-center sm:justify-around gap-6 mb-4"
+        >
           {row.map(renderPet)}
         </div>
       ))}
