@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,9 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Pet } from "../../domain/pet";
 import { checkUserSession, getUserData } from "../../application/checkUserSession";
-import { checkFavoritePet } from "../../application/checkFavoritePet";
 import { checkAdoptionRequest } from "../../application/checkAdoptionRequest";
 import { toggleFavoritePet } from "../../application/toggleFavoritePets";
+import { checkFavoritePet } from "../../application/checkFavoritePet";
 
 export default function ProfileAnimal() {
 
@@ -57,7 +56,9 @@ export default function ProfileAnimal() {
         setHasRequested(requested);
 
       } catch (error) {
+
         console.log("Error cargando datos:", error);
+
       }
 
     };
@@ -82,8 +83,6 @@ export default function ProfileAnimal() {
     );
 
     setIsFavorite(newStatus);
-
-    alert(newStatus ? "Se agregó a favoritos" : "Se quitó de favoritos");
 
   };
 
@@ -121,6 +120,22 @@ export default function ProfileAnimal() {
 
   };
 
+  const nextImage = () => {
+
+    if (imagePage < images.length - 1) {
+      setImagePage(imagePage + 1);
+    }
+
+  };
+
+  const prevImage = () => {
+
+    if (imagePage > 0) {
+      setImagePage(imagePage - 1);
+    }
+
+  };
+
   const images: string[] = (() => {
 
     if (!mascota) return [];
@@ -152,11 +167,13 @@ export default function ProfileAnimal() {
   })();
 
   if (!mascota) {
+
     return (
       <div className="flex items-center justify-center h-screen">
         No hay datos de la mascota
       </div>
     );
+
   }
 
   return (
@@ -168,7 +185,9 @@ export default function ProfileAnimal() {
         <button
           className="absolute left-5 bottom-5"
           onClick={() => router.back()}
-        />
+        >
+          ←
+        </button>
 
         <h1 className="text-white text-2xl font-bold">
           {mascota.name}
@@ -177,34 +196,65 @@ export default function ProfileAnimal() {
         <button
           className="absolute right-5 bottom-5"
           onClick={handleToggleFavorite}
-        />
+        >
+          {isFavorite ? "❤️" : "🤍"}
+        </button>
 
       </div>
 
+      {/* CARRUSEL */}
+
       <div className="relative my-4 mx-4 rounded-xl overflow-hidden">
 
-        <div className="flex overflow-x-scroll snap-x snap-mandatory scrollbar-hide">
+        <div className="relative w-full h-56">
 
-          {images.map((uri, idx) => (
+          <img
+            src={images[imagePage]}
+            alt={mascota.name}
+            className="w-full h-full object-cover rounded-xl"
+          />
 
-            <img
-              key={idx}
-              src={uri}
-              alt={mascota.name}
-              className="w-[calc(100%-2rem)] h-56 object-cover rounded-xl mr-2 snap-center"
-              onScroll={() => setImagePage(idx)}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+              >
+                ‹
+              </button>
+
+              <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+              >
+                ›
+              </button>
+            </>
+          )}
+
+          <button
+            className="absolute top-3 right-3 bg-black bg-opacity-30 p-2 rounded-full text-white"
+            onClick={copiarEnlace}
+          >
+            🔗
+          </button>
+
+        </div>
+
+        <div className="flex justify-center gap-2 mt-2">
+
+          {images.map((_, index) => (
+
+            <div
+              key={index}
+              className={`w-2 h-2 rounded-full ${
+                imagePage === index ? "bg-black" : "bg-gray-400"
+              }`}
             />
 
           ))}
 
         </div>
-
-        <button
-          className="absolute top-3 right-3 bg-black bg-opacity-30 p-2 rounded-full"
-          onClick={copiarEnlace}
-        >
-          Copiar enlace
-        </button>
 
       </div>
 
@@ -215,23 +265,17 @@ export default function ProfileAnimal() {
         <span>{mascota.location}</span>
       </button>
 
-      {mascota.adopted && (
-        <p className="text-center text-red-600 font-bold mt-2">
-          Esta mascota ya fue adoptada
-        </p>
-      )}
-
       <div className="flex justify-between bg-[#DAD2C3] rounded-2xl mx-5 mt-4 overflow-hidden">
 
         <button
-          className={`flex-1 py-2 ${tab === "info" ? "bg-white" : ""}`}
+          className={`flex-1 text-black py-2 ${tab === "info" ? "bg-white" : ""}`}
           onClick={() => setTab("info")}
         >
           Información
         </button>
 
         <button
-          className={`flex-1 py-2 ${tab === "salud" ? "bg-white" : ""}`}
+          className={`flex-1 text-black py-2 ${tab === "salud" ? "bg-white" : ""}`}
           onClick={() => setTab("salud")}
         >
           Salud
@@ -247,91 +291,38 @@ export default function ProfileAnimal() {
 
             <div className="flex justify-around flex-wrap gap-2 mb-5">
 
-              <div className="bg-white rounded-xl p-3">
-                <span>{mascota.sex}</span>
+              <div className=" text-black bg-white rounded-xl p-3">
+                {mascota.sex}
               </div>
 
-              <div className="bg-white rounded-xl p-3">
-                <span>{mascota.size}</span>
+              <div className="text-black bg-white rounded-xl p-3">
+                {mascota.size}
               </div>
 
-              <div className="bg-white rounded-xl p-3">
-                <span>{mascota.age}</span>
+              <div className="text-black bg-white rounded-xl p-3">
+                {mascota.age}
               </div>
 
-              <div className="bg-white rounded-xl p-3">
-                <span>{mascota.breed}</span>
+              <div className=" text-black bg-white rounded-xl p-3">
+                {mascota.breed}
               </div>
 
             </div>
 
-            <p className="text-center font-bold text-lg mb-2">
+            <p className="text-black text-center font-bold text-lg mb-2">
               Descripción
             </p>
 
-            <div className="bg-white p-4 rounded-xl">
+            <div className="bg-white p-4 rounded-xl text-black">
               {mascota.description}
             </div>
 
-            <p className="text-center font-bold text-lg mt-5 mb-2">
+            <p className="text-black text-center font-bold text-lg mt-5 mb-2">
               Contacto
             </p>
 
-            <button
-              className="mb-5"
-              onClick={llamar}
-            >
+            <div className="text-center text-black">
               {mascota.phone}
-            </button>
-
-            <div className="flex justify-center">
-
-              <button
-                className={`py-3 px-6 rounded-full font-bold ${
-                  !userLogged || hasRequested
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-[#D4B37A]"
-                }`}
-                disabled={!userLogged || hasRequested}
-               onClick={async () => {
-
-                  if (!userLogged) {
-                    alert("Debes iniciar sesión");
-                    return;
-                  }
- const user = await getUserData();
-    if (!user || !mascota) return;
-
-    const requested = checkAdoptionRequest(
-      user.id.toString(),
-      mascota.id.toString()
-    );
-
-    if (requested) {
-
-      setHasRequested(true);
-
-      alert("Ya enviaste una solicitud para esta mascota");
-
-      return;
-
-    }
-
-                  router.push(
-                    `/adoption/adoptionRequest?pet=${encodeURIComponent(
-                      JSON.stringify(mascota)
-                    )}`
-                  );
-
-                }}
-              >
-
-                {hasRequested
-                  ? "Solicitud enviada"
-                  : "Mandar solicitud de adopción"}
-
-              </button>
-
             </div>
 
           </>
@@ -349,4 +340,3 @@ export default function ProfileAnimal() {
   );
 
 }
- 

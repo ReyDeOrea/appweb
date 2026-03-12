@@ -33,6 +33,9 @@ export default function ViewRequest() {
   const router = useRouter();
   const [request, setRequest] = useState<any>(null);
 
+  
+  const [currentImage, setCurrentImage] = useState(0);
+
   useEffect(() => {
     const loadRequest = async () => {
       const param = searchParams.get("request");
@@ -75,9 +78,24 @@ export default function ViewRequest() {
   const statusKey = request.estado?.trim().toLowerCase() || "en espera";
   const statusStyle = statusColors[statusKey] ?? statusColors["en espera"];
 
+  
+  const nextImage = () => {
+    if (!request?.pet_images) return;
+    setCurrentImage((prev) =>
+      prev === request.pet_images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    if (!request?.pet_images) return;
+    setCurrentImage((prev) =>
+      prev === 0 ? request.pet_images.length - 1 : prev - 1
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
-     
+      
       <div className="bg-green-400 flex items-center p-4">
         <button
           className="text-white mr-4"
@@ -94,56 +112,78 @@ export default function ViewRequest() {
       <div className="p-4 max-w-3xl mx-auto space-y-6">
         
         <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="font-bold text-lg mb-2">Mascota</h2>
+          <h2 className="font-bold text-black text-lg mb-2">Mascota</h2>
           <p>
-            <span className="font-bold">Nombre:</span> {request.pet_name}
+            <span className="font-bold text-black">Nombre:</span>
+            <span className="text-black"> {request.pet_name}</span>
           </p>
+
           {request.pet_images?.length > 0 && (
-            <div className="flex space-x-4 overflow-x-auto mt-2">
-              {request.pet_images.map((img: string, index: number) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`Pet ${index}`}
-                  className="w-72 h-64 rounded-lg object-cover flex-shrink-0"
-                />
-              ))}
+            <div className="relative flex items-center justify-center mt-4">
+
+              <button
+                onClick={prevImage}
+                className="absolute left-0 bg-black/50 text-white px-3 py-1 rounded-full"
+              >
+                ‹
+              </button>
+
+              <img
+                src={request.pet_images[currentImage]}
+                alt="Pet"
+                className="w-96 h-72 rounded-lg object-cover"
+              />
+
+              <button
+                onClick={nextImage}
+                className="absolute right-0 bg-black/50 text-white px-3 py-1 rounded-full"
+              >
+                ›
+              </button>
+
             </div>
           )}
         </div>
 
-     
+        
         <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="font-bold text-lg mb-2">Datos del adoptante</h2>
+          <h2 className="font-bold text-black text-lg mb-2">Datos del adoptante</h2>
           <p>
-            <span className="font-bold">Nombre:</span>{" "}
-            {request.adoptante_nombre} {request.adoptante_apellido}
+            <span className="font-bold text-black">Nombre: </span>
+            <span className="text-black">
+              {request.adoptante_nombre} {request.adoptante_apellido}
+            </span>
           </p>
           <p>
-            <span className="font-bold">Edad:</span> {request.adoptante_edad}
+            <span className="font-bold text-black">Edad: </span>
+            <span className="text-black">{request.adoptante_edad}</span>
           </p>
           <p>
-            <span className="font-bold">Ubicación:</span> {request.adoptante_ubicacion}
+            <span className="font-bold text-black">Ubicación: </span>
+            <span className="text-black">{request.adoptante_ubicacion}</span>
           </p>
           <p>
-            <span className="font-bold">Teléfono:</span> {request.adoptante_telefono}
+            <span className="font-bold text-black">Teléfono: </span>
+            <span className="text-black">{request.adoptante_telefono}</span>
           </p>
         </div>
 
-     
+        
         <div className="bg-white p-4 rounded-lg shadow space-y-4">
-          <h2 className="font-bold text-lg mb-2">Preguntas del formulario</h2>
+          <h2 className="font-bold text-lg mb-2 text-black">Preguntas del formulario</h2>
           {preguntas.map((pregunta, i) => (
             <div key={i}>
-              <p className="font-bold">{pregunta}</p>
-              <p className="ml-2 mt-1">{request[`pregunta_${i + 1}`] ?? "Sin respuesta"}</p>
+              <p className="font-bold text-black">{pregunta}</p>
+              <p className="ml-2 mt-1 text-black">
+                {request[`pregunta_${i + 1}`] ?? "Sin respuesta"}
+              </p>
             </div>
           ))}
         </div>
 
         
         <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="font-bold text-lg mb-2">Estado de la solicitud</h2>
+          <h2 className="font-bold text-lg mb-2 text-black">Estado de la solicitud</h2>
           <span
             className={`${statusStyle.bg} ${statusStyle.text} font-bold px-4 py-2 rounded-full inline-block`}
           >

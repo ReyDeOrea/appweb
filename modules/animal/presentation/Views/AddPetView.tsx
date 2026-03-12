@@ -25,7 +25,6 @@ export default function AddPetScreen() {
   const [bannerPage, setBannerPage] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Selector de imágenes web
   const pickImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const files = Array.from(e.target.files);
@@ -109,25 +108,62 @@ export default function AddPetScreen() {
 
       <div className="bg-[#B7C979] py-6 mb-6">
         <div className="flex justify-center items-center gap-4">
+            <button
+          className="text-black mr-4"
+          onClick={() => router.back()}
+        >
+          &#8592; Volver
+        </button>
           <h1 className="text-white font-bold text-4xl">Animaland</h1>
           <span className="text-white text-4xl">🐾</span>
         </div>
       </div>
 
       {img.length > 0 && (
-        <div className="overflow-x-auto flex snap-x snap-mandatory mb-4">
-          {img.map((uri, idx) => (
-            <div key={idx} className="flex-shrink-0 snap-center w-[90vw] mx-2 my-2 flex justify-center">
-              <img src={uri} className="h-[42vw] rounded-xl object-cover" />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="relative flex justify-center mb-4">
+
+            <button
+              onClick={() =>
+                setBannerPage(
+                  bannerPage === 0 ? img.length - 1 : bannerPage - 1
+                )
+              }
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+            >
+              ‹
+            </button>
+
+            <img
+              src={img[bannerPage]}
+              className="h-[42vw] rounded-xl object-cover"
+            />
+
+            <button
+              onClick={() =>
+                setBannerPage(
+                  bannerPage === img.length - 1 ? 0 : bannerPage + 1
+                )
+              }
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+            >
+              ›
+            </button>
+
+          </div>
+
+          <div className="flex justify-center gap-2 mb-4">
+            {img.map((_, i) => (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full ${
+                  bannerPage === i ? "bg-black" : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+        </>
       )}
-      <div className="flex justify-center gap-2 mb-4">
-        {img.map((_, i) => (
-          <div key={i} className={`w-2 h-2 rounded-full ${bannerPage === i ? "bg-black" : "bg-gray-300"}`} />
-        ))}
-      </div>
 
       <div className="px-5 flex flex-col gap-5">
 
@@ -147,7 +183,9 @@ export default function AddPetScreen() {
             {petTypes.map((t) => (
               <button
                 key={t}
-                className={`px-3 py-2 rounded-lg border ${type === t ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"}`}
+                className={`px-3 py-2 text-black rounded-lg border ${
+                  type === t ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"
+                }`}
                 onClick={() => setType(t)}
               >
                 {t}
@@ -161,7 +199,7 @@ export default function AddPetScreen() {
             placeholder="Nombre del animal"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
           />
 
           <label className="text-gray-600 text-sm font-medium">Sexo</label>
@@ -169,7 +207,9 @@ export default function AddPetScreen() {
             {petSex.map((s) => (
               <button
                 key={s}
-                className={`px-3 py-2 rounded-lg border ${sex === s ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"}`}
+                className={`px-3 py-2 text-black rounded-lg border ${
+                  sex === s ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"
+                }`}
                 onClick={() => setSex(s)}
               >
                 {s}
@@ -182,7 +222,9 @@ export default function AddPetScreen() {
             {Object.values(PetSize).map((s) => (
               <button
                 key={s}
-                className={`px-3 py-2 rounded-lg border ${size === s ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"}`}
+                className={`px-3 py-2 text-black rounded-lg border ${
+                  size === s ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"
+                }`}
                 onClick={() => setSize(s)}
               >
                 {s}
@@ -196,7 +238,7 @@ export default function AddPetScreen() {
             placeholder="Edad"
             value={age}
             onChange={(e) => setAge(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
           />
 
           <label className="text-gray-600 text-sm font-medium">Raza</label>
@@ -205,7 +247,7 @@ export default function AddPetScreen() {
             placeholder="Raza"
             value={breed}
             onChange={(e) => setBreed(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
           />
 
           <label className="text-gray-600 text-sm font-medium">Ubicación</label>
@@ -214,7 +256,7 @@ export default function AddPetScreen() {
             placeholder="Ubicación"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
           />
 
           <label className="text-gray-600 text-sm font-medium">Descripción</label>
@@ -222,7 +264,7 @@ export default function AddPetScreen() {
             placeholder="Da una breve descripción"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-24"
+            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-24"
           />
         </div>
 
@@ -232,24 +274,26 @@ export default function AddPetScreen() {
             placeholder="Alergias / Vacunas / Discapacidad"
             value={healthInfo}
             onChange={(e) => setHealthInfo(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-20"
+            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-20"
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <h2 className="text-center font-bold text-lg text-[#311c1c]">Contacto</h2>
+          <h2 className="text-black text-center font-bold text-lg ">Contacto</h2>
           <input
             type="text"
             placeholder="Número de teléfono"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+            className=" text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
           />
         </div>
 
         <div className="flex flex-col gap-2 mt-4">
           <button
-            className={`bg-[#B7C979] text-white font-semibold py-3 rounded-xl ${isSaving ? "opacity-50" : ""}`}
+            className={`bg-[#B7C979] text-white font-semibold py-3 rounded-xl ${
+              isSaving ? "opacity-50" : ""
+            }`}
             onClick={savePet}
             disabled={isSaving}
           >
