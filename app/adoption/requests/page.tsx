@@ -3,13 +3,21 @@
 import { useState } from "react";
 import RequestsSent from "@/modules/adoption/presentation/views/RequestSent";
 import RequestsReceived from "@/modules/adoption/presentation/views/RequestsReceived";
+import { useRouter } from "next/navigation";
 
 export default function Requests() {
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
+  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-white pt-10 px-4 md:px-10">
-      <h1 className="text-2xl font-bold text-center mb-6">Solicitudes de adopción</h1>
+         <button
+          className="text-black mr-4"
+          onClick={() => router.back()}
+        >
+          &#8592; Volver
+        </button>
+      <h1 className="text-2xl text-black font-bold text-center mb-6">Solicitudes de adopción</h1>
 
       <div className="flex justify-center mb-6 border-b border-gray-200">
         <button

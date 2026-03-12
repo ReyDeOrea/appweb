@@ -176,8 +176,6 @@ export default function UpdatePetsScreen() {
 
     <div className="min-h-screen bg-[#FDF8F0] pb-10">
 
-      {/* HEADER */}
-
       <div className="bg-[#B7C979] pt-10 pb-5 mb-5 flex justify-center items-center relative">
 
         <button
@@ -198,22 +196,39 @@ export default function UpdatePetsScreen() {
 
       <div className="max-w-xl mx-auto px-4">
 
-        {/* IMAGENES */}
+        {/* IMAGENES CARRUSEL */}
 
         {images.length > 0 && (
 
           <>
-            <div className="overflow-x-auto flex gap-4 mb-3">
+            <div className="relative flex justify-center mb-3">
 
-              {images.map((uri, idx) => (
+              <button
+                onClick={() =>
+                  setImagePage(
+                    imagePage === 0 ? images.length - 1 : imagePage - 1
+                  )
+                }
+                className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+              >
+                ‹
+              </button>
 
-                <img
-                  key={idx}
-                  src={uri}
-                  className="w-[90%] rounded-2xl"
-                />
+              <img
+                src={images[imagePage]}
+                className="w-[90%] rounded-2xl"
+              />
 
-              ))}
+              <button
+                onClick={() =>
+                  setImagePage(
+                    imagePage === images.length - 1 ? 0 : imagePage + 1
+                  )
+                }
+                className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+              >
+                ›
+              </button>
 
             </div>
 
@@ -234,8 +249,6 @@ export default function UpdatePetsScreen() {
           </>
         )}
 
-        {/* BOTON IMAGEN */}
-
         <label className="bg-[#D4B37A] text-white font-semibold p-3 rounded-xl flex justify-center mb-4 cursor-pointer">
 
           Insertar Imagen
@@ -250,9 +263,7 @@ export default function UpdatePetsScreen() {
 
         </label>
 
-        {/* INFORMACION */}
-
-        <h2 className="text-center font-bold text-lg mb-2">
+        <h2 className="text-center font-bold text-black text-lg mb-2">
           Información general
         </h2>
 
@@ -265,7 +276,7 @@ export default function UpdatePetsScreen() {
             <button
               key={t}
               onClick={() => setType(t)}
-              className={`px-4 py-2 border rounded-lg font-bold capitalize ${
+              className={`px-4 py-2 border text-black rounded-lg font-bold capitalize ${
                 type === t
                   ? "bg-[#E5DCCC] border-[#DAC193]"
                   : "bg-white border-[#DAC193]"
@@ -279,7 +290,7 @@ export default function UpdatePetsScreen() {
         </div>
 
         <input
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 text-black"
           placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -294,7 +305,7 @@ export default function UpdatePetsScreen() {
             <button
               key={s}
               onClick={() => setSex(s)}
-              className={`px-4 py-2 border rounded-lg font-bold capitalize ${
+              className={`px-4 py-2 border text-black rounded-lg font-bold capitalize ${
                 sex === s
                   ? "bg-[#E5DCCC] border-[#DAC193]"
                   : "bg-white border-[#DAC193]"
@@ -308,7 +319,7 @@ export default function UpdatePetsScreen() {
         </div>
 
         <input
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 text-black"
           placeholder="Edad"
           value={age}
           onChange={(e) => setAge(e.target.value)}
@@ -337,40 +348,40 @@ export default function UpdatePetsScreen() {
         </div>
 
         <input
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          className=" text-black w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
           placeholder="Raza"
           value={breed}
           onChange={(e) => setBreed(e.target.value)}
         />
 
-        <h2 className="text-center font-bold text-lg mb-2">
+        <h2 className="text-center text-black font-bold text-lg mb-2">
           Salud
         </h2>
 
         <textarea
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 h-[100px]"
+          className=" text-black w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 h-[100px]"
           placeholder="Información de salud"
           value={healthInfo}
           onChange={(e) => setHealthInfo(e.target.value)}
         />
 
-        <h2 className="text-center font-bold text-lg mb-2">
+        <h2 className="text-black text-center font-bold text-lg mb-2">
           Descripción
         </h2>
 
         <textarea
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 h-[100px]"
+          className="text-black w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3 h-[100px]"
           placeholder="Descripción"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        <h2 className="text-center font-bold text-lg mb-2">
+        <h2 className="text-black text-center font-bold text-lg mb-2">
           Contacto
         </h2>
 
         <input
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          className=" text-black w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
           placeholder="Teléfono"
           value={phone}
           maxLength={10}
@@ -380,7 +391,7 @@ export default function UpdatePetsScreen() {
         />
 
         <input
-          className="w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
+          className="text-black w-full border border-[#E8E0D0] bg-white p-3 rounded-lg mb-3"
           placeholder="Ubicación"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
