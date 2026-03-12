@@ -169,7 +169,7 @@ export default function ProfileAnimal() {
   if (!mascota) {
 
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen text-gray-700 font-medium">
         No hay datos de la mascota
       </div>
     );
@@ -178,23 +178,21 @@ export default function ProfileAnimal() {
 
   return (
 
-    <div className="bg-[#F3F2ED] min-h-screen pb-20">
+    <div className="bg-[#F3F2ED] min-h-screen pb-20 font-sans">
 
-      <div className="relative h-28 bg-[#B8C76F] flex items-end justify-center pb-5">
+      <div className="relative h-28 bg-[#C7D383] flex items-end justify-center pb-4 shadow-md rounded-b-2xl">
 
         <button
-          className="absolute left-5 bottom-5"
+          className="absolute left-5 bottom-4 text-xl font-bold text-white hover:text-gray-200 transition"
           onClick={() => router.back()}
         >
           ←
         </button>
 
-        <h1 className="text-white text-2xl font-bold">
-          {mascota.name}
-        </h1>
+        <h1 className="text-white text-2xl font-bold">{mascota.name}</h1>
 
         <button
-          className="absolute right-5 bottom-5"
+          className="absolute right-5 bottom-4 text-xl transition"
           onClick={handleToggleFavorite}
         >
           {isFavorite ? "❤️" : "🤍"}
@@ -202,30 +200,28 @@ export default function ProfileAnimal() {
 
       </div>
 
-      {/* CARRUSEL */}
+      <div className="relative my-4 mx-4 rounded-xl overflow-hidden shadow-lg">
 
-      <div className="relative my-4 mx-4 rounded-xl overflow-hidden">
-
-        <div className="relative w-full h-56">
+        <div className="relative w-full h-80 md:h-[420px] rounded-xl overflow-hidden flex items-center justify-center bg-[#EDEBE4]">
 
           <img
             src={images[imagePage]}
             alt={mascota.name}
-            className="w-full h-full object-cover rounded-xl"
+            className="max-h-[85%] max-w-[92%] object-cover rounded-xl shadow-md"
           />
 
           {images.length > 1 && (
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full hover:bg-black/60 transition"
               >
                 ‹
               </button>
 
               <button
                 onClick={nextImage}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full hover:bg-black/60 transition"
               >
                 ›
               </button>
@@ -233,7 +229,7 @@ export default function ProfileAnimal() {
           )}
 
           <button
-            className="absolute top-3 right-3 bg-black bg-opacity-30 p-2 rounded-full text-white"
+            className="absolute top-3 right-3 bg-black bg-opacity-30 p-2 rounded-full text-white hover:bg-opacity-50 transition"
             onClick={copiarEnlace}
           >
             🔗
@@ -242,95 +238,65 @@ export default function ProfileAnimal() {
         </div>
 
         <div className="flex justify-center gap-2 mt-2">
-
           {images.map((_, index) => (
-
             <div
               key={index}
-              className={`w-2 h-2 rounded-full ${
-                imagePage === index ? "bg-black" : "bg-gray-400"
-              }`}
+              className={`w-2 h-2 rounded-full ${imagePage === index ? "bg-black" : "bg-gray-400"}`}
             />
-
           ))}
-
         </div>
 
       </div>
 
       <button
         onClick={abrirMapa}
-        className="flex items-center gap-2 mx-5 mt-2 text-blue-600 underline"
+        className="flex items-center gap-2 mx-5 mt-2 text-[#3B82F6] underline font-medium"
       >
         <span>{mascota.location}</span>
       </button>
 
-      <div className="flex justify-between bg-[#DAD2C3] rounded-2xl mx-5 mt-4 overflow-hidden">
-
+      <div className="flex justify-between bg-[#DAD2C3] rounded-2xl mx-5 mt-4 overflow-hidden shadow-sm">
         <button
-          className={`flex-1 text-black py-2 ${tab === "info" ? "bg-white" : ""}`}
+          className={`flex-1 text-black py-2 font-medium transition ${tab === "info" ? "bg-white" : ""}`}
           onClick={() => setTab("info")}
         >
           Información
         </button>
-
         <button
-          className={`flex-1 text-black py-2 ${tab === "salud" ? "bg-white" : ""}`}
+          className={`flex-1 text-black py-2 font-medium transition ${tab === "salud" ? "bg-white" : ""}`}
           onClick={() => setTab("salud")}
         >
           Salud
         </button>
-
       </div>
 
+      {/* CONTENIDO */}
       <div className="px-5 py-5">
 
         {tab === "info" && (
-
           <>
-
             <div className="flex justify-around flex-wrap gap-2 mb-5">
-
-              <div className=" text-black bg-white rounded-xl p-3">
-                {mascota.sex}
-              </div>
-
-              <div className="text-black bg-white rounded-xl p-3">
-                {mascota.size}
-              </div>
-
-              <div className="text-black bg-white rounded-xl p-3">
-                {mascota.age}
-              </div>
-
-              <div className=" text-black bg-white rounded-xl p-3">
-                {mascota.breed}
-              </div>
-
+              <div className="text-black bg-white rounded-xl p-3 text-center shadow">{mascota.sex}</div>
+              <div className="text-black bg-white rounded-xl p-3 text-center shadow">{mascota.size}</div>
+              <div className="text-black bg-white rounded-xl p-3 text-center shadow">{mascota.age}</div>
+              <div className="text-black bg-white rounded-xl p-3 text-center shadow">{mascota.breed}</div>
             </div>
 
-            <p className="text-black text-center font-bold text-lg mb-2">
-              Descripción
-            </p>
+            <p className="text-black text-center font-bold text-lg mb-2">Descripción</p>
+            <div className="bg-white p-4 rounded-xl text-black shadow">{mascota.description}</div>
 
-            <div className="bg-white p-4 rounded-xl text-black">
-              {mascota.description}
-            </div>
-
-            <p className="text-black text-center font-bold text-lg mt-5 mb-2">
-              Contacto
-            </p>
-
-            <div className="text-center text-black">
+            <p className="text-black text-center font-bold text-lg mt-5 mb-2">Contacto</p>
+            <div
+              className="text-center text-black bg-white rounded-xl p-3 shadow cursor-pointer hover:bg-gray-100 transition"
+              onClick={llamar}
+            >
               {mascota.phone}
             </div>
-
           </>
-
         )}
 
         {tab === "salud" && (
-          <p>{mascota.health_info}</p>
+          <div className="bg-white p-4 rounded-xl shadow text-black">{mascota.health_info}</div>
         )}
 
       </div>

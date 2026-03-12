@@ -18,6 +18,14 @@ export default function FavoritesPet() {
     loadFavorites();
   }, []);
 
+  const chunkArray = (arr: Pet[], size: number) => {
+    const result: Pet[][] = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
+  };
+
   const renderItem = (item: Pet) => {
     const isAdopted = item.adopted === true;
 
@@ -32,7 +40,7 @@ export default function FavoritesPet() {
     return (
       <div
         key={item.id}
-        className={`bg-white border p-4 mb-4 rounded-2xl mx-6 shadow ${isAdopted ? "bg-gray-200" : ""} cursor-pointer`}
+        className={`bg-white border p-4 mb-4 rounded-2xl shadow w-5/12 mx-3 ${isAdopted ? "bg-gray-200" : ""} cursor-pointer`}
         onClick={() => {
           if (isAdopted) return;
           router.push(`/pet/profileanimal?pet=${encodeURIComponent(JSON.stringify(item))}`);
@@ -42,7 +50,7 @@ export default function FavoritesPet() {
           <img
             src={images[0]}
             alt={item.name}
-            className={`w-full h-52 object-cover rounded-2xl ${isAdopted ? "opacity-40" : ""}`}
+            className={`w-full h-80 object-cover rounded-2xl ${isAdopted ? "opacity-40" : ""}`}
           />
           {isAdopted && (
             <div className="absolute top-2 left-2 bg-yellow-400 px-2 py-1 rounded-lg">
@@ -62,7 +70,6 @@ export default function FavoritesPet() {
 
   return (
     <div className="min-h-screen bg-[#FDF8F0]">
-  
       <div className="w-full h-16 bg-[#B7C979] flex items-center justify-center mb-4">
         <div className="flex items-center justify-center gap-2">
           <h1 className="text-white font-bold text-2xl">Animaland</h1>
@@ -70,11 +77,15 @@ export default function FavoritesPet() {
         </div>
       </div>
 
-      <div className="pb-10">
+      <div className="pb-10 flex flex-wrap justify-center">
         {favorites.length === 0 ? (
-          <p className="text-center mt-10 text-gray-500">No tienes favoritos aún</p>
+          <p className="text-center mt-10 text-gray-500 w-full">No tienes favoritos aún</p>
         ) : (
-          favorites.map(renderItem)
+          chunkArray(favorites, 2).map((pair, index) => (
+            <div key={index} className="flex w-full justify-center">
+              {pair.map(renderItem)}
+            </div>
+          ))
         )}
       </div>
     </div>
