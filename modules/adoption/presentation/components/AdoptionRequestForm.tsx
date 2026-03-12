@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { AdoptionRepository } from "../../infraestructure/adoptionDataSource";
 import { CreateAdoptionRequest } from "../../application/createAdoption";
 import { validateAdoptionForm } from "../../application/adoptionFormValidator";
@@ -11,173 +11,251 @@ const createRequest = new CreateAdoptionRequest(repository);
 
 export default function AdoptionForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
 
-  const petParam = searchParams.get("pet");
-  const pet = petParam ? JSON.parse(petParam) : null;
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [edad, setEdad] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [telefono, setTelefono] = useState("");
 
-  const [form, setForm] = useState({
-    nombre: "",
-    apellido: "",
-    edad: "",
-    ubicacion: "",
-    telefono: "",
-    pregunta_1: "",
-    pregunta_2: "",
-    pregunta_3: "",
-    pregunta_4: "",
-    pregunta_5: "",
-    pregunta_6: "",
-    pregunta_7: "",
-    pregunta_8: "",
-    pregunta_9: "",
-    pregunta_10: "",
-    pregunta_11: "",
-    pregunta_12: "",
-    pregunta_13: "",
-  });
-
-  const handleChange = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
+  const [pregunta_1, setPregunta1] = useState("");
+  const [pregunta_2, setPregunta2] = useState("");
+  const [pregunta_3, setPregunta3] = useState("");
+  const [pregunta_4, setPregunta4] = useState("");
+  const [pregunta_5, setPregunta5] = useState("");
+  const [pregunta_6, setPregunta6] = useState("");
+  const [pregunta_7, setPregunta7] = useState("");
+  const [pregunta_8, setPregunta8] = useState("");
+  const [pregunta_9, setPregunta9] = useState("");
+  const [pregunta_10, setPregunta10] = useState("");
+  const [pregunta_11, setPregunta11] = useState("");
+  const [pregunta_12, setPregunta12] = useState("");
+  const [pregunta_13, setPregunta13] = useState("");
 
   const enviarSolicitud = async () => {
     try {
-      validateAdoptionForm(form);
+
+      validateAdoptionForm({
+        nombre,
+        apellido,
+        edad,
+        ubicacion,
+        telefono,
+        pregunta_1,
+        pregunta_2,
+        pregunta_3,
+        pregunta_4,
+        pregunta_5,
+        pregunta_6,
+        pregunta_7,
+        pregunta_8,
+        pregunta_9,
+        pregunta_10,
+        pregunta_11,
+        pregunta_12,
+        pregunta_13,
+      });
 
       const userData = localStorage.getItem("user");
-      if (!userData) throw new Error("Usuario no encontrado");
+      const user = JSON.parse(userData!);
 
-      const user = JSON.parse(userData);
+      let pet: any = null;
 
-      if (!pet) throw new Error("Mascota no seleccionada");
+      const petParam = params.get("pet");
+      if (petParam) {
+        pet = JSON.parse(petParam);
+      }
 
       await createRequest.execute({
         pet_id: pet.id,
         user_id: user.id,
         owner_id: pet.user,
-        adoptante_nombre: form.nombre,
-        adoptante_apellido: form.apellido,
-        adoptante_edad: Number(form.edad),
-        adoptante_ubicacion: form.ubicacion,
-        adoptante_telefono: form.telefono,
-        pregunta_1: form.pregunta_1,
-        pregunta_2: form.pregunta_2,
-        pregunta_3: form.pregunta_3,
-        pregunta_4: form.pregunta_4,
-        pregunta_5: form.pregunta_5,
-        pregunta_6: form.pregunta_6,
-        pregunta_7: form.pregunta_7,
-        pregunta_8: form.pregunta_8,
-        pregunta_9: form.pregunta_9,
-        pregunta_10: form.pregunta_10,
-        pregunta_11: form.pregunta_11,
-        pregunta_12: form.pregunta_12,
-        pregunta_13: form.pregunta_13,
+        adoptante_nombre: nombre,
+        adoptante_apellido: apellido,
+        adoptante_edad: Number(edad),
+        adoptante_ubicacion: ubicacion,
+        adoptante_telefono: telefono,
+        pregunta_1,
+        pregunta_2,
+        pregunta_3,
+        pregunta_4,
+        pregunta_5,
+        pregunta_6,
+        pregunta_7,
+        pregunta_8,
+        pregunta_9,
+        pregunta_10,
+        pregunta_11,
+        pregunta_12,
+        pregunta_13,
       });
+
+      const key = `adoptionRequest_${user.id}`;
+
+      const data = localStorage.getItem(key);
+      const requests = data ? JSON.parse(data) : [];
+
+      const exists = requests.some((p: any) => String(p.id) === String(pet.id));
+
+      if (!exists) {
+        requests.push(pet);
+      }
+
+      localStorage.setItem(key, JSON.stringify(requests));
 
       alert("Solicitud enviada");
       router.back();
-    } catch (err: any) {
-      alert(err.message);
+
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#FDF8F0]">
-      {/* Header */}
-      <div className="bg-[#B7C979] flex items-center p-4 pt-12">
-        <button onClick={() => router.back()} className="text-white mr-4 text-2xl">
-          &#8592;
+
+      {/* HEADER */}
+      <div className="bg-[#B7C979] flex items-center px-4 py-4">
+
+        <button
+          onClick={() => router.back()}
+          className="text-white text-xl"
+        >
+          ←
         </button>
-        <div className="flex items-center justify-center flex-1">
-          <h1 className="text-white font-bold text-3xl mr-2">Animaland</h1>
-          <span className="material-icons text-white text-3xl">pets</span>
+
+        <div className="flex-1 flex justify-center items-center gap-2">
+          <h1 className="text-white text-2xl font-bold">Animaland</h1>
+          🐶
         </div>
+
       </div>
 
-      {/* Form */}
-      <div className="p-5 max-w-2xl mx-auto">
-        <h2 className="text-xl font-bold mb-4 mt-4">Datos personales</h2>
+      {/* FORM */}
+      <div className="max-w-2xl mx-auto p-6">
 
-        <label className="block mb-1">Nombre</label>
+        <h2 className="text-lg font-bold mb-4">Datos personales</h2>
+
+        <label className="block text-gray-700">Nombre</label>
         <input
-          className="w-full border border-[#E8E0D0] bg-white rounded-lg p-3 mb-4"
-          value={form.nombre}
-          onChange={(e) => handleChange("nombre", e.target.value)}
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setNombre(e.target.value)}
         />
 
-        <label className="block mb-1">Apellido</label>
+        <label className="block text-gray-700">Apellido</label>
         <input
-          className="w-full border border-[#E8E0D0] bg-white rounded-lg p-3 mb-4"
-          value={form.apellido}
-          onChange={(e) => handleChange("apellido", e.target.value)}
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setApellido(e.target.value)}
         />
 
-        <label className="block mb-1">Edad</label>
+        <label className="block text-gray-700">Edad</label>
         <input
           type="number"
-          className="w-full border border-[#E8E0D0] bg-white rounded-lg p-3 mb-4"
-          value={form.edad}
-          onChange={(e) => handleChange("edad", e.target.value)}
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setEdad(e.target.value)}
         />
 
-        <label className="block mb-1">Ubicación</label>
+        <label className="block text-gray-700">Ubicación</label>
         <input
-          className="w-full border border-[#E8E0D0] bg-white rounded-lg p-3 mb-4"
-          value={form.ubicacion}
-          onChange={(e) => handleChange("ubicacion", e.target.value)}
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setUbicacion(e.target.value)}
         />
 
-        <label className="block mb-1">Teléfono</label>
+        <label className="block text-gray-700">Teléfono</label>
         <input
-          type="tel"
-          className="w-full border border-[#E8E0D0] bg-white rounded-lg p-3 mb-4"
-          value={form.telefono}
-          onChange={(e) => handleChange("telefono", e.target.value)}
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setTelefono(e.target.value)}
         />
 
-        <h2 className="text-xl font-bold mb-4 mt-6">Preguntas</h2>
+        <h2 className="text-lg font-bold mt-6 mb-4">Preguntas</h2>
 
-        {Array.from({ length: 13 }, (_, i) => (
-          <div key={i} className="mb-4">
-            <label className="block mb-1">
-              {getQuestionLabel(i + 1)}
-            </label>
-            <textarea
-              className="w-full border border-[#E8E0D0] bg-white rounded-lg p-3 h-24 resize-none"
-              value={form[`pregunta_${i + 1}` as keyof typeof form]}
-              onChange={(e) => handleChange(`pregunta_${i + 1}`, e.target.value)}
-            />
-          </div>
-        ))}
+        <label>¿Por qué quieres adoptar una mascota?</label>
+        <textarea
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta1(e.target.value)}
+        />
+
+        <label>¿Vives en casa o departamento?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta2(e.target.value)}
+        />
+
+        <label>Si es rentado ¿te permiten mascotas?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta3(e.target.value)}
+        />
+
+        <label>¿Tienes jardín o espacio exterior?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta4(e.target.value)}
+        />
+
+        <label>¿Has tenido mascotas antes?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta5(e.target.value)}
+        />
+
+        <label>¿Qué pasó con esas mascotas?</label>
+        <textarea
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta6(e.target.value)}
+        />
+
+        <label>¿Actualmente tienes mascotas?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta7(e.target.value)}
+        />
+
+        <label>¿Qué tipo y cuántas?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta8(e.target.value)}
+        />
+
+        <label>¿Cuánto tiempo estará sola la mascota?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta9(e.target.value)}
+        />
+
+        <label>¿Quién cuidará cuando no estés?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta10(e.target.value)}
+        />
+
+        <label>¿Todos están de acuerdo con la adopción?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta11(e.target.value)}
+        />
+
+        <label>¿Presupuesto mensual para la mascota?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta12(e.target.value)}
+        />
+
+        <label>¿Aceptas esterilización/castración si es necesario?</label>
+        <input
+          className="w-full border rounded-lg p-3 mb-3"
+          onChange={(e) => setPregunta13(e.target.value)}
+        />
 
         <button
           onClick={enviarSolicitud}
-          className="w-full bg-[#E5DCCC] py-4 rounded-xl font-bold mt-4 mb-10"
+          className="w-full bg-[#E5DCCC] font-bold py-4 rounded-xl mt-4 hover:opacity-90"
         >
           Enviar solicitud
         </button>
+
       </div>
     </div>
   );
-}
-
-function getQuestionLabel(n: number) {
-  const questions = [
-    "¿Por qué quieres adoptar una mascota?",
-    "¿Vives en casa o departamento?",
-    "Si es rentado ¿te permiten mascotas?",
-    "¿Tienes jardín o espacio exterior?",
-    "¿Has tenido mascotas antes?",
-    "¿Qué pasó con esas mascotas?",
-    "¿Actualmente tienes mascotas?",
-    "¿Qué tipo y cuántas?",
-    "¿Cuánto tiempo estará sola la mascota?",
-    "¿Quién cuidará cuando no estés?",
-    "¿Todos están de acuerdo con la adopción?",
-    "¿Presupuesto mensual para la mascota?",
-    "¿Aceptas esterilización/castración si es necesario?",
-  ];
-  return questions[n - 1];
 }
