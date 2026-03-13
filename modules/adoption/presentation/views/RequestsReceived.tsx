@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AdoptionRepository } from "../../infraestructure/adoptionDataSource";
 import { GetRequestsForMyPets } from "../../application/getRequestReceived";
 import { RequestStatus } from "../../application/statusRequest";
+import { AdoptionRepository } from "../../infraestructure/adoptionDataSource";
 
 const repository = new AdoptionRepository();
 const getUserRequests = new GetRequestsForMyPets(repository);
@@ -24,6 +24,7 @@ export default function RequestsReceived() {
       if (!userData) return;
 
       const user = JSON.parse(userData);
+
       let data = await getUserRequests.execute(user.id);
 
       if (!data) {
@@ -34,7 +35,11 @@ export default function RequestsReceived() {
       data = await Promise.all(
         data.map(async (request: any) => {
           const pet = await repository.getPetById(request.pet_id);
-          return { ...request, pet_name: pet?.name || "Desconocida" };
+
+          return {
+            ...request,
+            pet_name: pet?.name || "Desconocida",
+          };
         })
       );
 
@@ -46,76 +51,99 @@ export default function RequestsReceived() {
 
   const aceptar = async (Rid: string, pet_id: number) => {
     try {
-
       await updateStatus.execute(Rid, "aceptado");
 
       await repository.updateStatusPet(pet_id, { adopted: true });
+
       loadRequests();
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error al aceptar solicitud:", error);
     }
   };
 
   const rechazar = async (id: string) => {
-     try {
-    await updateStatus.execute(id, "rechazado");
-    loadRequests();
-   } catch (error) {
+    try {
+      await updateStatus.execute(id, "rechazado");
+
+      loadRequests();
+    } catch (error) {
       console.error("Error al rechazar solicitud:", error);
     }
   };
 
   const verSolicitud = (request: any) => {
-    router.push(`/adoption/viewRequestForm?request=${encodeURIComponent(JSON.stringify(request))}`);
+    router.push(
+      `/viewRequestForm?request=${encodeURIComponent(JSON.stringify(request))}`
+    );
   };
 
-  if (requests.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-gray-600 text-lg">No hay solicitudes</p>
-      </div>
-    );
-  }
+  const llamarAdoptante = (telefono: string) => {
+    window.location.href = `tel:${telefono}`;
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <ul className="max-w-xl mx-auto space-y-4">
-        {requests.map((item) => (
-          <li
+    <div className="pb-24">
+      {requests.length === 0 ? (
+        <p className="text-center mt-5 text-gray-500 text-lg">
+          No hay solicitudes
+        </p>
+      ) : (
+        requests.map((item) => (
+          <div
             key={item.id}
-            className="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-gray-50"
             onClick={() => verSolicitud(item)}
+            className="p-4 border-b bg-white cursor-pointer hover:bg-gray-50"
           >
-            <p className="text-gray-800 text-lg">
-              <span className="font-bold">Mascota: </span>{item.pet_name}
+            <p className="text-base mb-1">
+              <span className="font-bold">Mascota: </span>
+              {item.pet_name}
             </p>
-            <p className="text-gray-800 text-lg">
-              <span className="font-bold">Adoptante: </span>{item.adoptante_nombre} {item.adoptante_apellido}
+
+            <p className="text-base mb-1">
+              <span className="font-bold">Adoptante: </span>
+              {item.adoptante_nombre} {item.adoptante_apellido}
             </p>
-            <p className="text-gray-800 text-lg">
-              <span className="font-bold">Estado: </span>{item.estado}
+
+            <p className="text-base mb-1">
+              <span className="font-bold">Estado: </span>
+              {item.estado}
             </p>
 
             {item.estado === "en_proceso" && (
-              <div className="flex space-x-3 mt-4">
+              <div
+                className="flex gap-2 mt-3"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
-                  onClick={(e) => { e.stopPropagation(); aceptar(item.id, item.pet_id); }}
-                  className="flex-1 bg-green-300 py-2 rounded font-bold text-black"
+                  onClick={() => aceptar(item.id, item.pet_id)}
+                  className="bg-green-300 px-3 py-2 rounded font-bold"
                 >
                   Aceptar
                 </button>
+
                 <button
-                  onClick={(e) => { e.stopPropagation(); rechazar(item.id); }}
-                  className="flex-1 bg-red-300 py-2 rounded font-bold text-black"
+                  onClick={() => rechazar(item.id)}
+                  className="bg-red-300 px-3 py-2 rounded font-bold"
                 >
                   Rechazar
                 </button>
               </div>
             )}
-          </li>
-        ))}
-      </ul>
+
+            {item.estado === "aceptado" && item.adoptante_telefono && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  llamarAdoptante(item.adoptante_telefono);
+                }}
+                className="bg-blue-200 mt-3 px-3 py-2 rounded font-bold"
+              >
+                Llamar al adoptante ({item.adoptante_telefono})
+              </button>
+            )}
+          </div>
+        ))
+      )}
     </div>
   );
 }

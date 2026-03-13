@@ -12,7 +12,7 @@ export default function ProfileAnimal() {
 
   const router = useRouter();
   const params = useSearchParams();
-  
+
 
   const [tab, setTab] = useState<"info" | "salud">("info");
   const [isFavorite, setIsFavorite] = useState(false);
@@ -79,12 +79,11 @@ export default function ProfileAnimal() {
     window.location.href = `tel:${mascota?.phone}`;
   };
 
-  // ✅ ENLACE CORREGIDO PARA NEXT
   const copiarEnlace = async () => {
 
     if (!mascota) return;
 
-    const url = `${window.location.origin}/animal/profileAnimal?pet=${encodeURIComponent(
+    const url = `${window.location.origin}/pet/profileanimal?pet=${encodeURIComponent(
       JSON.stringify(mascota)
     )}`;
 
@@ -93,7 +92,6 @@ export default function ProfileAnimal() {
     alert("Enlace copiado");
   };
 
-  // ✅ ABRIR UBICACIÓN EN GOOGLE MAPS
   const abrirMapa = () => {
 
     if (!mascota?.location) return;
@@ -141,8 +139,6 @@ export default function ProfileAnimal() {
 
     <div className="min-h-screen bg-[#F3F2ED]">
 
-      {/* HEADER */}
-
       <div className="bg-[#B8C76F] h-[110px] flex items-end pb-5 relative">
 
         <button
@@ -166,27 +162,42 @@ export default function ProfileAnimal() {
       </div>
 
 
-      {/* GALERIA */}
-
       <div className="mx-4 mt-4 rounded-xl overflow-hidden relative">
 
-        <div className="flex overflow-x-auto snap-x">
+        <div className="relative w-full h-[220px]">
 
-          {images.map((uri, idx) => (
+          <img
+            src={images[imagePage]}
+            className="w-full h-full object-cover transition-all duration-300"
+          />
 
-            <img
-              key={idx}
-              src={uri}
-              className="w-full h-[220px] object-cover snap-center"
-              onScroll={(e: any) => {
-                const page = Math.round(
-                  e.target.scrollLeft / e.target.clientWidth
-                );
-                setImagePage(page);
-              }}
-            />
+          {imagePage > 0 && (
+            <button
+              onClick={() => setImagePage(imagePage - 1)}
+              className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+            >
+              ‹
+            </button>
+          )}
 
-          ))}
+          {imagePage < images.length - 1 && (
+            <button
+              onClick={() => setImagePage(imagePage + 1)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
+            >
+              ›
+            </button>
+          )}
+
+          <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
+            {images.map((_, i) => (
+              <div
+                key={i}
+                className={`h-2 w-2 rounded-full ${i === imagePage ? "bg-white" : "bg-white/40"
+                  }`}
+              />
+            ))}
+          </div>
 
         </div>
 
@@ -199,12 +210,9 @@ export default function ProfileAnimal() {
 
       </div>
 
-
-      {/* UBICACION */}
-
       <button
         onClick={abrirMapa}
-        className="text-black flex items-center gap-2 mx-5 mt-3"
+        className="text-black  underline flex items-center gap-2 mx-5 mt-3"
       >
         📍
         <span>{mascota.location}</span>
@@ -218,24 +226,20 @@ export default function ProfileAnimal() {
       )}
 
 
-      {/* TABS */}
-
       <div className="flex mx-5 mt-4 bg-[#DAD2C3] p-1 rounded-full">
 
         <button
           onClick={() => setTab("info")}
-          className={`flex-1 p-2 rounded-full ${
-            tab === "info" ? "bg-white" : ""
-          }`}
+          className={`flex-1 p-2 rounded-full ${tab === "info" ? "bg-white" : ""
+            }`}
         >
           Información
         </button>
 
         <button
           onClick={() => setTab("salud")}
-          className={`flex-1 p-2 rounded-full ${
-            tab === "salud" ? "bg-white" : ""
-          }`}
+          className={`flex-1 p-2 rounded-full ${tab === "salud" ? "bg-white" : ""
+            }`}
         >
           Salud
         </button>
@@ -248,8 +252,6 @@ export default function ProfileAnimal() {
         {tab === "info" && (
 
           <>
-            {/* INFO RAPIDA */}
-
             <div className="grid grid-cols-4 gap-3">
 
               <div className="bg-white border rounded-xl p-3 text-center">
@@ -321,11 +323,10 @@ export default function ProfileAnimal() {
 
                 }}
                 disabled={!userLogged || hasRequested}
-                className={`px-8 py-3 rounded-full text-white font-bold ${
-                  !userLogged || hasRequested
+                className={`px-8 py-3 rounded-full text-white font-bold ${!userLogged || hasRequested
                     ? "bg-gray-400"
                     : "bg-[#D4B37A]"
-                }`}
+                  }`}
               >
                 {hasRequested
                   ? "Solicitud enviada"
