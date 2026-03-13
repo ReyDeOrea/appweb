@@ -71,10 +71,8 @@ export default function RequestsReceived() {
     }
   };
 
-  const verSolicitud = (request: any) => {
-    router.push(
-      `/viewRequestForm?request=${encodeURIComponent(JSON.stringify(request))}`
-    );
+   const verSolicitud = (request: any) => {
+    router.push(`/adoption/viewRequestForm?request=${encodeURIComponent(JSON.stringify(request))}`);
   };
 
   const llamarAdoptante = (telefono: string) => {
