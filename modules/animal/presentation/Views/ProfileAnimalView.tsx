@@ -162,13 +162,13 @@ export default function ProfileAnimal() {
       </div>
 
 
-      <div className="mx-4 mt-4 rounded-xl overflow-hidden relative">
+      <div className="mx-5 mt-4 rounded-xl overflow-hidden relative flex justify-center">
 
-        <div className="relative w-full h-[220px]">
+        <div className="relative w-3/4 h-[390px]"> 
 
           <img
             src={images[imagePage]}
-            className="w-full h-full object-cover transition-all duration-300"
+            className="w-full h-full object-cover transition-all duration-300 rounded-xl"
           />
 
           {imagePage > 0 && (
@@ -193,8 +193,7 @@ export default function ProfileAnimal() {
             {images.map((_, i) => (
               <div
                 key={i}
-                className={`h-2 w-2 rounded-full ${i === imagePage ? "bg-white" : "bg-white/40"
-                  }`}
+                className={`h-2 w-2 rounded-full ${i === imagePage ? "bg-white" : "bg-white/40"}`}
               />
             ))}
           </div>
@@ -230,7 +229,7 @@ export default function ProfileAnimal() {
 
         <button
           onClick={() => setTab("info")}
-          className={`flex-1 p-2 rounded-full ${tab === "info" ? "bg-white" : ""
+          className={`text-black flex-1 p-2 rounded-full ${tab === "info" ? "bg-white" : ""
             }`}
         >
           Información
@@ -238,7 +237,7 @@ export default function ProfileAnimal() {
 
         <button
           onClick={() => setTab("salud")}
-          className={`flex-1 p-2 rounded-full ${tab === "salud" ? "bg-white" : ""
+          className={`text-black flex-1 p-2 rounded-full ${tab === "salud" ? "bg-white" : ""
             }`}
         >
           Salud
@@ -254,20 +253,24 @@ export default function ProfileAnimal() {
           <>
             <div className="grid grid-cols-4 gap-3">
 
-              <div className="bg-white border rounded-xl p-3 text-center">
-                {mascota.sex}
+              <div className="bg-white border rounded-xl p-3 text-center flex flex-col items-center">
+                <span className="text-black text-xl mb-1">⚥</span>
+                <span className="text-black">{mascota.sex}</span>
               </div>
 
-              <div className="bg-white border rounded-xl p-3 text-center">
-                {mascota.size}
+              <div className="bg-white border rounded-xl p-3 text-center flex flex-col items-center">
+                <span className="text-xl mb-1">📏</span>
+                <span className="text-black">{mascota.size}</span>
               </div>
 
-              <div className="bg-white border rounded-xl p-3 text-center">
-                {mascota.age}
+              <div className="bg-white border rounded-xl p-3 text-center flex flex-col items-center">
+                <span className="text-xl mb-1">🎂</span>
+                <span className="text-black">{mascota.age}</span>
               </div>
 
-              <div className="bg-white border rounded-xl p-3 text-center">
-                {mascota.breed}
+              <div className="bg-white border rounded-xl p-3 text-center flex flex-col items-center">
+                <span className="text-xl mb-1">🐾</span>
+                <span className="text-black">{mascota.breed}</span>
               </div>
 
             </div>
@@ -276,11 +279,11 @@ export default function ProfileAnimal() {
             <div className="border-b-2 border-[#E5DCCC] my-6"></div>
 
 
-            <h3 className="text-center font-bold mb-3">
+            <h3 className="text-black text-center font-bold mb-3">
               Descripción
             </h3>
 
-            <div className="bg-white border rounded-xl p-4">
+            <div className="text-black bg-white border rounded-xl p-4">
               {mascota.description}
             </div>
 
@@ -288,13 +291,13 @@ export default function ProfileAnimal() {
             <div className="border-b-2 border-[#E5DCCC] my-6"></div>
 
 
-            <h3 className="text-center font-bold mb-3">
+            <h3 className="text-black text-center font-bold mb-3">
               Contacto
             </h3>
 
             <button
               onClick={llamar}
-              className="bg-white border rounded-xl p-4 w-full"
+              className="text-black bg-white border rounded-xl p-4 w-full"
             >
               📞 {mascota.phone}
             </button>
@@ -324,8 +327,8 @@ export default function ProfileAnimal() {
                 }}
                 disabled={!userLogged || hasRequested}
                 className={`px-8 py-3 rounded-full text-white font-bold ${!userLogged || hasRequested
-                    ? "bg-gray-400"
-                    : "bg-[#D4B37A]"
+                  ? "bg-gray-400"
+                  : "bg-[#D4B37A]"
                   }`}
               >
                 {hasRequested
@@ -340,7 +343,7 @@ export default function ProfileAnimal() {
 
         {tab === "salud" && (
 
-          <div>
+          <div className="p-5 text-black">
             {mascota.health_info}
           </div>
 
