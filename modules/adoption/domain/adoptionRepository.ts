@@ -10,6 +10,8 @@ export interface AdoptionRequestRepository {
 
     getRequestsByUser(userId: string): Promise<AdoptionForm[]>;
 
+    getRequestsForOwner(ownerId: string): Promise<AdoptionForm[]>;
+
     requestExists(userId: string, petId: string): Promise<boolean>;
 
     updateStatus(
@@ -19,5 +21,7 @@ export interface AdoptionRequestRepository {
 
     getPetById(petId: string): Promise<Pet | null>;
     
+     updateStatusPet(petId: string, data: Partial<Pet>): Promise<boolean>;
+     
    // deleteRequest(requestId: string): Promise<boolean>;
 }

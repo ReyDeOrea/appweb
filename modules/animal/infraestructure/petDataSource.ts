@@ -1,7 +1,10 @@
 import { supabase } from "@/lib/supabase/supabase";
 import { CreatePet, Pet } from "../domain/pet";
+import { PetRepository } from "../domain/petRepsitory";
 
-export async function addPet(pet: CreatePet): Promise<Pet | null> {
+export class SupabasePetRepository implements PetRepository {
+
+ async  addPet(pet: CreatePet): Promise<Pet | null> {
   try {
     const { data, error } = await supabase
       .from("pets")
@@ -18,7 +21,7 @@ export async function addPet(pet: CreatePet): Promise<Pet | null> {
   }
 }
 
-export async function getPets(): Promise<Pet[]> {
+ async  getPets(): Promise<Pet[]> {
   try {
     const { data, error } = await supabase
       .from("pets")
@@ -34,7 +37,7 @@ export async function getPets(): Promise<Pet[]> {
   }
 }
 
-export async function getPeId(id: string): Promise<Pet | null> {
+ async  getPetById(id: string): Promise<Pet | null> {
   try {
     const { data, error } = await supabase
       .from("pets")
@@ -51,7 +54,7 @@ export async function getPeId(id: string): Promise<Pet | null> {
   }
 }
 
-export async function updatePet(id: string, pet: Partial<Pet>): Promise<boolean> {
+ async  updatePet(id: string, pet: Partial<Pet>): Promise<boolean> {
   try {
     const { error } = await supabase
       .from("pets")
@@ -67,7 +70,7 @@ export async function updatePet(id: string, pet: Partial<Pet>): Promise<boolean>
   }
 }
 
-export async function deletePet(id: string): Promise<boolean> {
+ async  deletePet(id: string): Promise<boolean> {
   try {
     const { error } = await supabase
       .from("pets")
@@ -84,7 +87,7 @@ export async function deletePet(id: string): Promise<boolean> {
   }
 }
 
- export async function adoptPet(id: string): Promise<boolean> {
+  async  adoptPet(id: string): Promise<boolean> {
   try {
     const { error } = await supabase
       .from("pets")
@@ -100,5 +103,6 @@ export async function deletePet(id: string): Promise<boolean> {
     console.log("ERROR adoptPet:", e);
     return false;
   }
+}
 }
 

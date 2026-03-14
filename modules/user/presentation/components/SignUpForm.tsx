@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { registerUser } from "../../application/registerUser";
+import { useState } from "react";
 import { validateSignUpData } from "../../application/validateSingUpData";
+import { registerUser } from "../../application/registerUser";
 import { checkUserExists } from "../../application/checkUserExists";
 
 export default function SignUp() {
+
   const router = useRouter();
 
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [numt, setNumT] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,121 +20,177 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
+
     try {
+
       setLoading(true);
 
       validateSignUpData({
-        username,
-        phone,
+        username: usuario,
+        phone: numt,
         email,
         password,
-        confirmPassword,
+        confirmPassword
       });
 
-      await checkUserExists(email, username, phone);
+      await checkUserExists(
+        email,
+        usuario.trim().toLowerCase(),
+        numt
+      );
 
       await registerUser({
-        username,
-        phone,
         email,
+        username: usuario,
         password,
-        avatar_url: avatarUrl,
+        phone: numt,
+        avatar_url: avatarUrl
       });
 
-      alert("Cuenta creada correctamente");
+      alert("Cuenta creada");
+
       router.replace("/pet");
+
     } catch (err: any) {
+
       alert(err.message);
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center p-4">
 
-      <div className="bg-yellow-400 w-full py-4 flex justify-center items-center mb-5">
-        <h1 className="text-white font-bold text-4xl mr-2">Animaland</h1>
-        <span className="material-icons text-white text-3xl">pets</span>
+    <div className="min-h-screen bg-[#FDF8F0] flex flex-col items-center pb-10">
+
+
+      <div className="w-full h-[90px] pt-8 bg-[#B7C979] flex items-center justify-center relative">
+
+        <button
+          onClick={() => router.back()}
+          className="absolute left-4 top-10 text-white"
+        >
+          &#8592; Volver
+        </button>
+
+        <div className="flex items-center text-white font-bold text-3xl gap-1">
+          Animaland
+        </div>
+
       </div>
 
-      <div className="mb-5">
-        <Image
-          src="/images/DogAndCat.jpeg"
-          alt="Dog and Cat"
-          width={300}
-          height={200}
-          className="rounded-xl mx-auto"
-        />
-      </div>
+      <Image
+        src="/images/DogAndCat.jpeg"
+        alt="dog and cat"
+        width={600}
+        height={200}
+        className="w-[90%] h-[200px] object-cover rounded-lg my-4"
+      />
 
-      <p className="text-gray-600 text-center mb-5">
+      <p className="text-center text-gray-600 mb-2">
         Crea una nueva cuenta ahora
       </p>
 
-      <div className="w-full max-w-md space-y-4">
-        <input
-          type="text"
-          placeholder="Usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
+      <div className="w-full max-w-md px-5">
 
-        <input
-          type="text"
-          placeholder="Número de Teléfono"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
+        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
+          <input
+            className="ml-2 flex-1 outline-none"
+            placeholder="Usuario"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+          />
 
-        <input
-          type="password"
-          placeholder="Confirmar Contraseña"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
+        </div>
+
+        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
+
+          <input
+            className="ml-2 flex-1 outline-none"
+            placeholder="Número de teléfono"
+            value={numt}
+            onChange={(e) => setNumT(e.target.value)}
+          />
+
+        </div>
+
+        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
+
+          <input
+            className="ml-2 flex-1 outline-none"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+        </div>
+
+        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
+
+          <input
+            type="password"
+            className="ml-2 flex-1 outline-none"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+        </div>
+
+        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
+
+          <input
+            type="password"
+            className="ml-2 flex-1 outline-none"
+            placeholder="Confirmar contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+        </div>
+
       </div>
 
-      <div className="flex flex-col items-center mt-5 w-full max-w-md">
+      <div className="flex items-center justify-center mt-4">
+
+        <Image
+          src="/images/DOG.png"
+          alt="dog"
+          width={60}
+          height={60}
+          className="mr-3"
+        />
+
         <button
           onClick={handleRegister}
           disabled={loading}
-          className={`w-full py-3 rounded-xl font-bold text-white ${
-            loading ? "bg-yellow-300 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"
-          }`}
+          className="bg-[#dee8b4] px-12 py-3 rounded-2xl text-white font-bold text-lg hover:opacity-90"
         >
-          {loading ? "Creando cuenta..." : "Crear cuenta"}
+          {loading ? "Creando..." : "Crear cuenta"}
         </button>
 
-        <div className="flex items-center justify-center mt-4 space-x-2">
-          <span>¿Ya tienes una cuenta?</span>
-          <button
-            onClick={() => router.push("/user/login")}
-            className="font-bold underline text-yellow-500"
-          >
-            Iniciar Sesión
-          </button>
-        </div>
       </div>
+
+      <div className="flex mt-4">
+        <p>¿Ya tienes una cuenta?</p>
+
+        <button
+          onClick={() => router.push("/user/login")}
+          className="font-bold underline ml-1"
+        >
+          Iniciar sesión
+        </button>
+
+      </div>
+
     </div>
+
   );
+
 }
