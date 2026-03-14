@@ -1,35 +1,32 @@
 import { useRouter } from "next/navigation";
 
 interface ModalMenuProps {
-  visible: boolean;
-  onClose: () => void;
   user: any;
   setUser: (u: any) => void;
   onUpdate?: () => void;
 }
 
-export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMenuProps) {
+export function ModalMenu({  user, setUser, onUpdate }: ModalMenuProps) {
   const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
     onUpdate?.();
-    onClose();
     router.replace("/pet");
   };
 
-  if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-end z-50">
-      <div className="bg-white w-full max-w-xs p-6 rounded-t-2xl shadow-lg">
+<div className="fixed top-0 left-0 h-screen z-50 flex">
+<div className="bg-white w-[150px] h-full p-6 shadow-lg border-r border-gray-200">
+
         <h2 className="text-center text-lg font-bold mb-6">Menú</h2>
 
         <div className="flex flex-col space-y-4">
 
           <button
-            onClick={() => { onClose(); router.push("/pet"); }}
+            onClick={() =>  router.push("/pet") }
             className="flex items-center space-x-3 text-gray-600 hover:text-yellow-700"
           >
 
@@ -39,7 +36,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
           {!user && (
             <>
               <button
-                onClick={() => { onClose(); router.push("/user/login"); }}
+                onClick={() =>  router.push("/user/login")}
                 className="flex items-center space-x-3 text-gray-600 hover:text-blue-500"
               >
 
@@ -47,7 +44,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
               </button>
 
               <button
-                onClick={() => { onClose(); router.push("/user/signup"); }}
+                onClick={() => router.push("/user/signup")}
                 className="flex items-center space-x-3 text-gray-600 hover:text-green-500"
               >
 
@@ -59,7 +56,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
           {user && (
             <>
               <button
-                onClick={() => { onClose(); router.push("/pet/mypets"); onUpdate?.(); }}
+                onClick={() => { router.push("/pet/mypets"); onUpdate?.(); }}
                 className="flex items-center space-x-3 text-gray-600 hover:text-pink-500"
               >
 
@@ -67,7 +64,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
               </button>
 
               <button
-                onClick={() => { onClose(); router.push("/pet/favorites"); }}
+                onClick={() => { router.push("/pet/favorites"); }}
                 className="flex items-center space-x-3 text-gray-600 hover:text-red-500"
               >
 
@@ -75,7 +72,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
               </button>
 
               <button
-                onClick={() => { onClose(); router.push("/adoption/requests"); }}
+                onClick={() => router.push("/adoption/requests")}
                 className="flex flex-col items-start space-y-0 text-gray-600 hover:text-purple-500"
               >
                 <div className="flex items-center space-x-3">
@@ -86,7 +83,7 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
               </button>
 
               <button
-                onClick={() => { onClose(); router.push("/user/account"); }}
+                onClick={() => router.push("/user/account")}
                 className="flex items-center space-x-3 text-gray-600 hover:text-indigo-500"
               >
 
@@ -103,13 +100,6 @@ export function ModalMenu({ visible, onClose, user, setUser, onUpdate }: ModalMe
             </>
           )}
         </div>
-
-        <button
-          onClick={onClose}
-          className="block w-full text-center text-gray-500 mt-6 font-medium"
-        >
-          Cancelar
-        </button>
       </div>
     </div>
   );

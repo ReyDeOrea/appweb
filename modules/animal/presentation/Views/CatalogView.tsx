@@ -188,14 +188,13 @@ export default function CatalogView() {
     );
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 bg-[#FDF8F0] max-w-full">
+<div className="ml-[150px] p-4 sm:p-6 md:p-8 bg-[#FDF8F0] max-w-full">
+      
       <div className="flex justify-between items-center bg-[#B7C979] p-4 mb-4">
         <h2 className="text-white text-xl font-bold flex items-center gap-2">
           Animaland 🐶
         </h2>
-        <button onClick={() => setModalOpen(true)} className="text-white text-2xl">
-          ☰
-        </button>
+        
       </div>
 
       <div className="flex flex-wrap items-center border border-[#7E6950] rounded-[10px] px-4 py-2 mb-4 bg-[#E5DCCC] gap-2">
@@ -252,8 +251,6 @@ export default function CatalogView() {
       ))}
 
       <ModalMenu
-        visible={modalOpen}
-        onClose={() => setModalOpen(false)}
         user={user}
         setUser={setUser}
       />
