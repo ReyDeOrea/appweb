@@ -4,6 +4,7 @@ interface UpdateUserProfileInput {
   username: string;
   phone: string;
   avatar_url?: string;
+  email?: string
 }
 
 export const updateUserProfile = async(user: { email: string; [key: string]: any }, update: UpdateUserProfileInput) => {

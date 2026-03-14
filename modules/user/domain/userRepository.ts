@@ -9,5 +9,9 @@ export interface UserRepository {
   verifyUserEmail(username: string, email: string): Promise<UserProfile | null>;
 
 
-   checkIfProfileExists(id: string): Promise<boolean>;
+  checkIfProfileExists(id: string): Promise<boolean>;
+
+  createUserProfile(id: string, username?: string, phone?: string): Promise<void>;
+
+  resetPassword(email: string): Promise<void>;
 }
