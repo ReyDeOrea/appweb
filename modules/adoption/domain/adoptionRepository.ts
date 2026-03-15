@@ -21,7 +21,7 @@ export interface AdoptionRequestRepository {
 
     getPetById(petId: string): Promise<Pet | null>;
     
-     updateStatusPet(petId: string, data: Partial<Pet>): Promise<boolean>;
+     updateStatusPet(petId: number, data: Partial<Pet>): Promise<boolean>;
      
    // deleteRequest(requestId: string): Promise<boolean>;
 }
