@@ -2,7 +2,10 @@ import { supabase } from "@/lib/supabase/supabase";
 
 export const checkUserExists = async (email: string, username: string, phone: string) => {
 
-  username = username.trim().toLowerCase();
+  email = email.trim().toLowerCase();
+  username = username.trim()
+  phone = phone.trim();
+
   
     const { data: emailData, error: emailError } = await supabase
     .from("clients")

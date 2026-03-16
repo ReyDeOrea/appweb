@@ -34,9 +34,9 @@ export default function SignUp() {
       });
 
       await checkUserExists(
-        email,
-        usuario.trim().toLowerCase(),
-        numt
+         email.trim().toLowerCase(),
+        usuario.trim(),
+         numt.trim()
       );
 
       await registerUser({

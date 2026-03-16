@@ -29,7 +29,7 @@ export default function AddPetScreen() {
     if (!e.target.files) return;
     const files = Array.from(e.target.files);
     const uris = files.map((f) => URL.createObjectURL(f));
-    setImage([...img, ...uris]);
+    setImage(uris);
   };
 
   const clearFields = () => {
