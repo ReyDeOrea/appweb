@@ -1,21 +1,22 @@
 import { supabase } from "@/lib/supabase/supabase";
 
-interface UpdateUserProfileInput {
-  username: string;
-  phone: string;
-  avatar_url?: string;
-  email?: string
-}
+export const updateUserProfile = async (
+  user: any,
+  updates: { username: string; phone: string; avatar_url: string; email: string }
+) => {
 
-export const updateUserProfile = async(user: { email: string; [key: string]: any }, update: UpdateUserProfileInput) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("clients")
-    .update(update)
-    .eq("email", user.email)
-    .select()
-    .single();
+    .update(updates)
+    .eq("email", user.email);
 
   if (error) throw error;
 
-  return data;
+  const newUser = { ...user, ...updates };
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem("user", JSON.stringify(newUser));
+  }
+
+  return newUser;
 };
