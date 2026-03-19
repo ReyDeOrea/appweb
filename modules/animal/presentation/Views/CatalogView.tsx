@@ -8,6 +8,9 @@ import { getPetsUseCase } from "@/modules/animal/application/getPets";
 import { Pet } from "@/modules/animal/domain/pet";
 import { FilterModal, Filters } from "@/modules/animal/presentation/components/FilterModal";
 import { ModalMenu } from "@/modules/user/presentation/components/modalMenu";
+import { FaDog, FaPaw } from "react-icons/fa";
+import { IoIosSearch } from "react-icons/io";
+import { IoFilterOutline } from "react-icons/io5";
 
 const CARD_WIDTH = 180;
 const IMAGE_SIZE = 150;
@@ -140,12 +143,12 @@ export default function CatalogView() {
       images = pet.image_url ? [pet.image_url] : [];
     }
 
-    return (
+   return (
       <div
         key={pet.id}
-        className={`w-[250px] p-2 rounded-[15px] text-center cursor-pointer relative transition-all duration-300 hover:scale-105 shadow-md 
+        className={`w-[220px] p-3 rounded-[15px] text-center cursor-pointer relative transition-all duration-300 hover:scale-105 shadow-md 
         ${isAdopted ? "bg-[#F5F5F5] hover:bg-[#E0E0E0]" : "bg-[#EAEAEA] hover:bg-[#D9D9D9]"}
-        flex-shrink-0`}
+        flex-shrink-0 mx-2`}
         onClick={() =>
           router.push(`/pet/profileanimal?pet=${encodeURIComponent(JSON.stringify(pet))}`)
         }
@@ -167,7 +170,7 @@ export default function CatalogView() {
           />
         )}
 
-        <div className="font-semibold mt-2 text-[#333]">{pet.name}</div>
+        <div className="font-semibold mt-2 text-[#333] text-base">{pet.name}</div>
         <div className="text-sm text-[#666]">{pet.sex}</div>
         <div className="text-sm text-[#666]">{pet.size}</div>
 
@@ -182,85 +185,129 @@ export default function CatalogView() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-[80vh] bg-[#FDF8F0]">
-        Cargando...
+      <div className="flex justify-center items-center h-screen bg-[#FDF8F0]">
+        <p className="text-[#B7C979] text-xl font-semibold">Cargando...</p>
       </div>
     );
 
   return (
-<div className="ml-[150px] p-4 sm:p-6 md:p-8 bg-[#FDF8F0] max-w-full">
-      
-      <div className="flex justify-between items-center bg-[#B7C979] p-4 mb-4">
-        <h2 className="text-white text-xl font-bold flex items-center gap-2">
-          Animaland 🐶
-        </h2>
-        
+ <div className="min-h-screen bg-[#FDF8F0] p-4 md:p-6 ml-[200px]">
+
+    <ModalMenu
+      user={user}
+      setUser={setUser}
+    />
+
+    <div className="flex-1 w-full p-4 md:p-6">
+     
+     <div className="bg-[#B7C979] w-full p-4 mb-6 flex items-center justify-between rounded-xl">
+       <h2 className="text-white text-2xl font-bold flex items-center gap-2">
+       Animaland
+       <FaPaw className="text-white text-3xl" />
+  </h2>
       </div>
 
-      <div className="flex flex-wrap items-center border border-[#7E6950] rounded-[10px] px-4 py-2 mb-4 bg-[#E5DCCC] gap-2">
+      {/* barra para buscar*/}
+      <div className="bg-[#E5DCCC] rounded-xl p-2 mb-6 flex items-center border border-[#7E6950]">
+         <button className="text-[#5B4000] px-4 py-2 hover:bg-[#D9C9A3] rounded-lg transition-colors">
+       <IoIosSearch className="text-3xl"/>
+        </button>
         <input
           type="text"
-          placeholder="Buscar"
+          placeholder="Buscar mascotas..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 min-w-[150px] h-10 bg-transparent outline-none text-[#333] placeholder:text-[#999]"
+          className="flex-1 bg-transparent px-4 py-2 outline-none text-[#333] placeholder:text-[#7E6950]"
         />
-        <button className="text-[#5B4000] h-10 px-3">🔍</button>
-        <button onClick={() => setFilterOpen(true)} className="text-[#D09100] h-10 px-3">
-          ⚙️
+       
+        <button 
+          onClick={() => setFilterOpen(true)} 
+          className="text-[#D09100] px-4 py-2 hover:bg-[#D9C9A3] rounded-lg transition-colors ml-2"
+        >
+         <IoFilterOutline className="text-3xl"/>
         </button>
       </div>
 
-      <div className="flex overflow-x-auto gap-3 mb-6 p-4 bg-[#FFF8E7] rounded-2xl shadow-lg border border-[#D9C9A3]">
-        {bannerImages.map((item, idx) => (
-          <div
-            key={idx}
-            className="min-w-[300px] flex-shrink-0 relative rounded-2xl overflow-hidden shadow-md transition-transform duration-300 flex items-center justify-center bg-[#FDF8F0]"
-            style={{ height: BANNER_HEIGHT }}
-          >
-            <Image
-              loader={supabaseLoader}
-              src={item.image}
-              alt="banner"
-              width={300}
-              height={BANNER_HEIGHT}
-              style={{
-                objectFit: "contain",
-                borderRadius: 20,
-                width: "100%",
-                height: "100%",
-              }}
-            />
+      {/* Banner  */}
+      <div className="mb-8">
+        <h3 className="text-[#7E6950] font-semibold mb-3 text-lg">🌟 Destacados</h3>
+        <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
+          {bannerImages.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex-shrink-0 relative rounded-2xl overflow-hidden shadow-lg bg-[#FFF8E7] border border-[#D9C9A3]"
+              style={{ width: 300, height: BANNER_HEIGHT }}
+            >
+              <Image
+                loader={supabaseLoader}
+                src={item.image}
+                alt="banner"
+                width={300}
+                height={BANNER_HEIGHT}
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
 
-            {item.type === "adopted" && (
-              <div className="absolute bottom-2 right-2 bg-[#22c55e] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
-                ¡ {item.name} ahora tiene una familia! 🐾
-              </div>
-            )}
-          </div>
-        ))}
+              {item.type === "adopted" && (
+                <div className="absolute bottom-2 right-2 bg-[#22c55e] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  🏠 ¡{item.name} ha sido adoptado!
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        
+        {/* Dots indicator */}
+        <div className="flex justify-center mt-3">
+          {bannerImages.map((_, idx) => (
+            <div
+              key={idx}
+              className={`w-2 h-2 rounded-full mx-1 ${
+                idx === 0 ? "bg-[#D09100]" : "bg-[#ccc]"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
-      {chunks.map((row, idx) => (
-        <div
-          key={idx}
-          className="flex flex-wrap justify-center sm:justify-around gap-6 mb-4"
-        >
-          {row.map(renderPet)}
+      {/* Pets grid horizontal */}
+      <div>
+        <h3 className="text-[#7E6950] font-semibold mb-3 text-lg">
+          🐾 Mascotas disponibles ({filteredPets.length})
+        </h3>
+        <div className="flex overflow-x-auto gap-4 pb-6 scrollbar-hide">
+          {filteredPets.length > 0 ? (
+            filteredPets.map(renderPet)
+          ) : (
+            <div className="w-full text-center py-10 text-[#7E6950]">
+              No se encontraron mascotas
+            </div>
+          )}
         </div>
-      ))}
+      </div>
 
-      <ModalMenu
-        user={user}
-        setUser={setUser}
-      />
-
+      {/* Modals */}
       <FilterModal
         visible={filterOpen}
         onClose={() => setFilterOpen(false)}
         filters={filters}
         setFilters={setFilters}
       />
+
+      {/* Estilos para ocultar scrollbar */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
+      </div>
   );
 }

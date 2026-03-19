@@ -1,4 +1,7 @@
 import { useRouter } from "next/navigation";
+import { FaDoorOpen, FaKey, FaPaw, FaRegHeart } from "react-icons/fa";
+import { FaListCheck } from "react-icons/fa6";
+import { IoHome, IoKeypadOutline, IoPersonOutline } from "react-icons/io5";
 
 interface ModalMenuProps {
   user: any;
@@ -18,89 +21,133 @@ export function ModalMenu({  user, setUser, onUpdate }: ModalMenuProps) {
 
 
   return (
-<div className="fixed top-0 left-0 h-screen z-50 flex">
-<div className="bg-white w-[150px] h-full p-6 shadow-lg border-r border-gray-200">
+  <div className="fixed top-0 left-0 h-screen z-50 flex ">
+    <div className="bg-[#B7C979] w-[200px] h-full p-6 shadow-lg border-r border-[#8BA05F]">
+      
+      {/* Título del menú */}
+      <div className="mb-8">
+        <h2 className="text-center text-white text-xl font-bold mb-2">Menú</h2>
+        <div className="w-12 h-1 bg-white mx-auto rounded-full opacity-50"></div>
+      </div>
 
-        <h2 className="text-center text-lg font-bold mb-6">Menú</h2>
+      {/* Opciones del menú */}
+      <div className="flex flex-col space-y-2">
+        
+        {/* Inicio */}
+        <button
+          onClick={() => router.push("/pet")}
+          className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+        >
+          <span className="text-xl group-hover:scale-110 transition-transform">
+            <IoHome />
 
-        <div className="flex flex-col space-y-4">
+          </span>
+          <span className="text-sm font-medium">Inicio</span>
+        </button>
 
-          <button
-            onClick={() =>  router.push("/pet") }
-            className="flex items-center space-x-3 text-gray-600 hover:text-yellow-700"
-          >
+        {!user && (
+          <>
+            {/* Login */}
+            <button
+              onClick={() => router.push("/user/login")}
+              className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+            >
+              <span className="text-xl group-hover:scale-110 transition-transform">
+               <IoKeypadOutline />
 
-            <span className="text-sm font-medium">Inicio</span>
-          </button>
+              </span>
+              <span className="text-sm font-medium">Iniciar sesión</span>
+            </button>
 
-          {!user && (
-            <>
-              <button
-                onClick={() =>  router.push("/user/login")}
-                className="flex items-center space-x-3 text-gray-600 hover:text-blue-500"
-              >
+            {/* Registro */}
+            <button
+              onClick={() => router.push("/user/signup")}
+              className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+            >
+              <span className="text-xl group-hover:scale-110 transition-transform">
+                <IoPersonOutline />
 
-                <span className="text-sm font-medium">Login</span>
-              </button>
+              </span>
+              <span className="text-sm font-medium">Registrarse</span>
+            </button>
+          </>
+        )}
 
-              <button
-                onClick={() => router.push("/user/signup")}
-                className="flex items-center space-x-3 text-gray-600 hover:text-green-500"
-              >
+        {user && (
+          <>
+            {/* Separador visual para usuario autenticado */}
+            <div className="my-2 border-t border-white/30 pt-2">
+              <p className="text-white/70 text-xs px-4 mb-2">Mi cuenta</p>
+            </div>
 
-                <span className="text-sm font-medium">Registro</span>
-              </button>
-            </>
-          )}
+            {/* Mis mascotas */}
+            <button
+              onClick={() => { router.push("/pet/mypets"); onUpdate?.(); }}
+              className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+            >
+              <span className="text-xl group-hover:scale-110 transition-transform">
+                <FaPaw />
+</span>
+              <span className="text-sm font-medium">Mis mascotas</span>
+            </button>
 
-          {user && (
-            <>
-              <button
-                onClick={() => { router.push("/pet/mypets"); onUpdate?.(); }}
-                className="flex items-center space-x-3 text-gray-600 hover:text-pink-500"
-              >
+            {/* Favoritos */}
+            <button
+              onClick={() => { router.push("/pet/favorites"); }}
+              className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+            >
+              <span className="text-xl group-hover:scale-110 transition-transform">
+                <FaRegHeart />
+              </span>
+              <span className="text-sm font-medium">Favoritos</span>
+            </button>
 
-                <span className="text-sm font-medium">Mis mascotas</span>
-              </button>
+            {/* Solicitudes de adopción */}
+            <button
+              onClick={() => router.push("/adoption/requests")}
+              className="flex flex-col items-start px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+            >
+              <div className="flex items-center space-x-3">
+                <span className="text-xl group-hover:scale-110 transition-transform">
+                  <FaListCheck/>
 
-              <button
-                onClick={() => { router.push("/pet/favorites"); }}
-                className="flex items-center space-x-3 text-gray-600 hover:text-red-500"
-              >
+                </span>
+                <span className="text-sm font-medium">Solicitudes</span>
+              </div>
+              <span className="text-xs font-light ml-9 text-white/80">de adopción</span>
+            </button>
 
-                <span className="text-sm font-medium">Favoritos</span>
-              </button>
+            {/* Perfil */}
+            <button
+              onClick={() => router.push("/user/account")}
+              className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-[#8BA05F] rounded-lg transition-all duration-300 group"
+            >
+              <span className="text-xl group-hover:scale-110 transition-transform">
+                <IoPersonOutline />
+              </span>
+              <span className="text-sm font-medium">Perfil</span>
+            </button>
 
-              <button
-                onClick={() => router.push("/adoption/requests")}
-                className="flex flex-col items-start space-y-0 text-gray-600 hover:text-purple-500"
-              >
-                <div className="flex items-center space-x-3">
-
-                  <span className="text-sm font-medium">Solicitudes</span>
-                </div>
-                <span className="text-sm font-medium">de adopción</span>
-              </button>
-
-              <button
-                onClick={() => router.push("/user/account")}
-                className="flex items-center space-x-3 text-gray-600 hover:text-indigo-500"
-              >
-
-                <span className="text-sm font-medium">Perfil</span>
-              </button>
-
+            {/* Salir - con estilo especial */}
+            <div className="mt-4 pt-4 border-t border-white/30">
               <button
                 onClick={logout}
-                className="flex items-center space-x-3 text-red-500 hover:text-red-700 mt-2"
+                className="flex items-center space-x-3 px-4 py-3 text-white/90 hover:text-white bg-red-500/20 hover:bg-red-500/40 rounded-lg transition-all duration-300 w-full group"
               >
-
-                <span className="text-sm font-medium">Salir</span>
+                <span className="text-xl group-hover:scale-110 transition-transform">
+                  <FaDoorOpen />
+                </span>
+                <span className="text-sm font-medium">Cerrar sesión</span>
               </button>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
+
+       
+
       </div>
     </div>
+  </div>
+
   );
 }
