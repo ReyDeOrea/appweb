@@ -55,7 +55,7 @@ export default function RequestsSent() {
         {requests.map((item) => (
           <li
             key={item.id}
-            className="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-gray-50"
+            className="bg-white p-4 rounded-lg shadow cursor-pointer hover:black-50"
             onClick={() => verSolicitud(item)}
           >
             <p className="text-gray-800 text-lg">

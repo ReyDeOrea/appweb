@@ -2,6 +2,7 @@
 
 import React from "react";
 import { deletePetUseCase } from "../../application/deletePet";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 interface DeletePetModalProps {
   visible: boolean;
@@ -10,7 +11,12 @@ interface DeletePetModalProps {
   onDeleted?: () => void;
 }
 
-export default function DeletePetModal({ visible, onClose, petId, onDeleted }: DeletePetModalProps) {
+export default function DeletePetModal({
+  visible,
+  onClose,
+  petId,
+  onDeleted,
+}: DeletePetModalProps) {
 
   const handleDeletePet = async () => {
     if (!petId) return;
@@ -35,30 +41,40 @@ export default function DeletePetModal({ visible, onClose, petId, onDeleted }: D
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white w-4/5 sm:w-1/2 md:w-1/3 p-5 rounded-lg shadow-lg">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
 
-        <div className="w-full h-14 bg-yellow-400 flex justify-center items-center rounded-t-md mb-4">
-          <h2 className="text-white font-bold text-lg">Eliminar Mascota</h2>
+      <div className="bg-white w-[90%] max-w-md p-6 rounded-2xl shadow-xl animate-fadeIn">
+
+        <div className="flex justify-center mb-4">
+          <div className="bg-red-100 p-4 rounded-full">
+            <FaExclamationTriangle className="text-red-500 text-2xl" />
+          </div>
         </div>
 
-        <p className="mb-6 text-center">
-          ¿Estás seguro de querer eliminar el perfil del animal?
+        <h2 className="text-center text-xl font-bold text-gray-900 mb-2">
+          Eliminar Mascota
+        </h2>
+
+        <p className="text-center text-gray-700 mb-6">
+          ¿Estás seguro de eliminar esta mascota? Esta acción no se puede deshacer.
         </p>
 
-        <div className="flex justify-between gap-4">
+        <div className="flex gap-3">
+
           <button
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded"
             onClick={onClose}
+            className="flex-1 py-3 rounded-xl border border-gray-300 text-gray-800 font-semibold hover:bg-gray-100 transition"
           >
-            No
+            Cancelar
           </button>
+
           <button
-            className="flex-1 bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-2 rounded"
             onClick={confirmDelete}
+            className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition"
           >
-            Sí
+            Eliminar
           </button>
+
         </div>
       </div>
     </div>

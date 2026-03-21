@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AdoptionRepository } from "../../infraestructure/adoptionDataSource";
+import { FaPaw } from "react-icons/fa";
 
 const repository = new AdoptionRepository();
 
@@ -95,17 +96,23 @@ export default function ViewRequest() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      
-      <div className="bg-green-400 flex items-center p-4">
-        <button
-          className="text-white mr-4"
-          onClick={() => router.back()}
-        >
-          &#8592; Volver
-        </button>
-        <div className="flex items-center space-x-2">
-          <h1 className="text-white text-2xl font-bold">Animaland</h1>
-          <span className="text-white text-2xl">🐶</span>
+        <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="text-white font-bold hover:underline"
+          >
+            &#8592; Volver
+          </button>
+
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <span className="text-white text-3xl md:text-4xl"> <FaPaw/></span>
+          </div>
+
+          <div className="w-[70px]" />
         </div>
       </div>
 

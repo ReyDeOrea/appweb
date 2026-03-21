@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AdoptionRepository } from "../../infraestructure/adoptionDataSource";
 import { CreateAdoptionRequest } from "../../application/createAdoption";
 import { validateAdoptionForm } from "../../application/adoptionFormValidator";
+import { FaPaw } from "react-icons/fa";
 
 const repository = new AdoptionRepository();
 const createRequest = new CreateAdoptionRequest(repository);
@@ -33,9 +34,13 @@ export default function AdoptionForm() {
   const [pregunta_12, setPregunta12] = useState("");
   const [pregunta_13, setPregunta13] = useState("");
 
+  const inputStyle =
+    "w-full text-black border border-[#E8E0D0] bg-white rounded-xl p-3 outline-none focus:ring-2 focus:ring-[#D4B37A] focus:border-[#D4B37A] transition";
+  const textareaStyle =
+    "w-full text-black border border-[#E8E0D0] bg-white rounded-xl p-3 min-h-[110px] outline-none focus:ring-2 focus:ring-[#D4B37A] focus:border-[#D4B37A] transition resize-none";
+
   const enviarSolicitud = async () => {
     try {
-
       validateAdoptionForm({
         nombre,
         apellido,
@@ -92,7 +97,6 @@ export default function AdoptionForm() {
       });
 
       const key = `adoptionRequest_${user.id}`;
-
       const data = localStorage.getItem(key);
       const requests = data ? JSON.parse(data) : [];
 
@@ -106,7 +110,6 @@ export default function AdoptionForm() {
 
       alert("Solicitud enviada");
       router.back();
-
     } catch (error: any) {
       alert(error.message);
     }
@@ -114,147 +117,258 @@ export default function AdoptionForm() {
 
   return (
     <div className="min-h-screen bg-[#FDF8F0]">
+      <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="text-white font-bold hover:underline"
+          >
+            &#8592; Volver
+          </button>
 
-      {/* HEADER */}
-      <div className="bg-[#B7C979] flex items-center px-4 py-4">
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <span className="text-white text-3xl md:text-4xl"> <FaPaw/></span>
+          </div>
 
-        <button
-          onClick={() => router.back()}
-          className="text-white text-xl"
-        >
-          ←
-        </button>
-
-        <div className="flex-1 flex justify-center items-center gap-2">
-          <h1 className="text-white text-2xl font-bold">Animaland</h1>
-          🐶
+          <div className="w-[70px]" />
         </div>
-
       </div>
 
-      {/* FORM */}
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
+          <h2 className="text-center font-bold text-2xl text-[#311c1c] mb-8">
+            Formulario de adopción
+          </h2>
 
-        <h2 className="text-lg font-bold mb-4">Datos personales</h2>
+          <div className="space-y-10">
+            <div>
+              <h3 className="font-bold text-lg text-[#311c1c] mb-5">
+                Datos personales
+              </h3>
 
-        <label className="block text-gray-700">Nombre</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setNombre(e.target.value)}
-        />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-gray-600 text-sm font-medium mb-2">
+                    Nombre
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                  />
+                </div>
 
-        <label className="block text-gray-700">Apellido</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setApellido(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-600 text-sm font-medium mb-2">
+                    Apellido/s
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={apellido}
+                    onChange={(e) => setApellido(e.target.value)}
+                  />
+                </div>
 
-        <label className="block text-gray-700">Edad</label>
-        <input
-          type="number"
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setEdad(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-600 text-sm font-medium mb-2">
+                    Edad
+                  </label>
+                  <input
+                    type="number"
+                    className={inputStyle}
+                    value={edad}
+                    onChange={(e) => setEdad(e.target.value)}
+                  />
+                </div>
 
-        <label className="block text-gray-700">Ubicación</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setUbicacion(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-600 text-sm font-medium mb-2">
+                    Teléfono
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={telefono}
+                    onChange={(e) => setTelefono(e.target.value)}
+                  />
+                </div>
 
-        <label className="block text-gray-700">Teléfono</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setTelefono(e.target.value)}
-        />
+                <div className="md:col-span-2">
+                  <label className="block text-gray-600 text-sm font-medium mb-2">
+                    Ubicación
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={ubicacion}
+                    onChange={(e) => setUbicacion(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
 
-        <h2 className="text-lg font-bold mt-6 mb-4">Preguntas</h2>
+            <div>
+              <h3 className="font-bold text-lg text-[#311c1c] mb-5">
+                Preguntas del formulario
+              </h3>
 
-        <label>¿Por qué quieres adoptar una mascota?</label>
-        <textarea
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta1(e.target.value)}
-        />
+              <div className="grid grid-cols-1 gap-5">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    1. ¿Por qué quieres adoptar una mascota?
+                  </label>
+                  <textarea
+                    className={textareaStyle}
+                    value={pregunta_1}
+                    onChange={(e) => setPregunta1(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Vives en casa o departamento?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta2(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    2. ¿Vives en casa o departamento?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_2}
+                    onChange={(e) => setPregunta2(e.target.value)}
+                  />
+                </div>
 
-        <label>Si es rentado ¿te permiten mascotas?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta3(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    3. Si es rentado ¿te permiten mascotas?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_3}
+                    onChange={(e) => setPregunta3(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Tienes jardín o espacio exterior?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta4(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    4. ¿Tienes jardín o espacio exterior?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_4}
+                    onChange={(e) => setPregunta4(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Has tenido mascotas antes?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta5(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    5. ¿Has tenido mascotas antes?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_5}
+                    onChange={(e) => setPregunta5(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Qué pasó con esas mascotas?</label>
-        <textarea
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta6(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    6. ¿Qué pasó con esas mascotas?
+                  </label>
+                  <textarea
+                    className={textareaStyle}
+                    value={pregunta_6}
+                    onChange={(e) => setPregunta6(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Actualmente tienes mascotas?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta7(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    7. ¿Actualmente tienes mascotas?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_7}
+                    onChange={(e) => setPregunta7(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Qué tipo y cuántas?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta8(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    8. ¿Qué tipo y cuántas?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_8}
+                    onChange={(e) => setPregunta8(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Cuánto tiempo estará sola la mascota?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta9(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    9. ¿Cuánto tiempo estará sola la mascota?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_9}
+                    onChange={(e) => setPregunta9(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Quién cuidará cuando no estés?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta10(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    10. ¿Quién cuidará cuando no estés?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_10}
+                    onChange={(e) => setPregunta10(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Todos están de acuerdo con la adopción?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta11(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    11. ¿Todos están de acuerdo con la adopción?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_11}
+                    onChange={(e) => setPregunta11(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Presupuesto mensual para la mascota?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta12(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    12. ¿Presupuesto mensual para la mascota?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_12}
+                    onChange={(e) => setPregunta12(e.target.value)}
+                  />
+                </div>
 
-        <label>¿Aceptas esterilización/castración si es necesario?</label>
-        <input
-          className="w-full border rounded-lg p-3 mb-3"
-          onChange={(e) => setPregunta13(e.target.value)}
-        />
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    13. ¿Aceptas esterilización/castración si es necesario?
+                  </label>
+                  <input
+                    className={inputStyle}
+                    value={pregunta_13}
+                    onChange={(e) => setPregunta13(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
 
-        <button
-          onClick={enviarSolicitud}
-          className="w-full bg-[#E5DCCC] font-bold py-4 rounded-xl mt-4 hover:opacity-90"
-        >
-          Enviar solicitud
-        </button>
-
+            <div className="pt-2">
+              <button
+                onClick={enviarSolicitud}
+                className="w-full md:w-auto md:px-20 bg-[#D4B37A] hover:bg-[#c8a66b] text-white font-bold py-4 rounded-xl transition"
+              >
+                Enviar solicitud
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
