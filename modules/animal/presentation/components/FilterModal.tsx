@@ -18,17 +18,22 @@ export interface Filters {
 
 type ArrayFilterKey = "type" | "sex" | "size";
 
-export function FilterModal({ visible, onClose, filters, setFilters }: FilterModalProps) {
+export function FilterModal({
+  visible,
+  onClose,
+  filters,
+  setFilters,
+}: FilterModalProps) {
   if (!visible) return null;
 
   const toggleFilter = (key: ArrayFilterKey, value: string) => {
     const arr = filters[key] || [];
     const lowerValue = value.toLowerCase();
 
-    if (arr.map(v => v.toLowerCase()).includes(lowerValue)) {
+    if (arr.map((v) => v.toLowerCase()).includes(lowerValue)) {
       setFilters({
         ...filters,
-        [key]: arr.filter(v => v.toLowerCase() !== lowerValue),
+        [key]: arr.filter((v) => v.toLowerCase() !== lowerValue),
       });
     } else {
       setFilters({
@@ -39,14 +44,21 @@ export function FilterModal({ visible, onClose, filters, setFilters }: FilterMod
   };
 
   const renderButtons = (key: ArrayFilterKey, options: string[]) => (
-    <div className="flex flex-wrap gap-2 mb-2">
-      {options.map(v => {
-        const active = (filters[key] as string[])?.map(f => f.toLowerCase()).includes(v.toLowerCase());
+    <div className="flex flex-wrap gap-3 mb-2">
+      {options.map((v) => {
+        const active = (filters[key] as string[])
+          ?.map((f) => f.toLowerCase())
+          .includes(v.toLowerCase());
+
         return (
           <button
             key={v}
-            className={`px-3 py-2 rounded-lg ${active ? "bg-yellow-700 text-white font-bold" : "bg-gray-300"}`}
             onClick={() => toggleFilter(key, v)}
+            className={`px-4 py-2 rounded-xl border transition text-sm ${
+              active
+                ? "bg-[#D4B37A] border-[#D4B37A] text-white font-bold"
+                : "bg-white border-[#DAC193] text-[#311c1c] hover:bg-[#F7F1E7]"
+            }`}
           >
             {v}
           </button>
@@ -56,35 +68,75 @@ export function FilterModal({ visible, onClose, filters, setFilters }: FilterMod
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg p-6 w-11/12 max-w-md">
-        <h2 className="text-xl font-bold mb-4">Filtros</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4">
+      <div className="w-full max-w-2xl rounded-[20px] border border-[#E8E0D0] bg-[#FDF8F0] p-6 md:p-8 shadow-xl">
+        <h2 className="text-center text-2xl font-bold text-[#311c1c] mb-6">
+          Filtros
+        </h2>
 
-        <div>
-          <p>Tipo</p>
-          {renderButtons("type", ["Perro", "Gato"])}
+        <div className="space-y-5">
+          <div>
+            <h3 className="text-[15px] font-semibold text-[#311c1c] mb-2">
+              Tipo
+            </h3>
+            {renderButtons("type", ["Perro", "Gato"])}
+          </div>
 
-          <p>Sexo</p>
-          {renderButtons("sex", ["Hembra", "Macho"])}
+          <div>
+            <h3 className="text-[15px] font-semibold text-[#311c1c] mb-2">
+              Sexo
+            </h3>
+            {renderButtons("sex", ["Hembra", "Macho"])}
+          </div>
 
-          <p>Tamaño</p>
-          {renderButtons("size", ["Pequeño", "Mediano", "Grande"])}
+          <div>
+            <h3 className="text-[15px] font-semibold text-[#311c1c] mb-2">
+              Tamaño
+            </h3>
+            {renderButtons("size", ["Pequeño", "Mediano", "Grande"])}
+          </div>
 
-          <p>Animales adoptados</p>
-          <button
-            className={`px-3 py-2 rounded-lg ${filters.adopted ? "bg-yellow-700 text-white font-bold" : "bg-gray-300"}`}
-            onClick={() => setFilters({ ...filters, adopted: !filters.adopted })}
-          >
-            Mostrar animales adoptados
-          </button>
+          <div>
+            <h3 className="text-[15px] font-semibold text-[#311c1c] mb-2">
+              Animales adoptados
+            </h3>
+            <button
+              onClick={() =>
+                setFilters({ ...filters, adopted: !filters.adopted })
+              }
+              className={`px-4 py-2 rounded-xl border transition text-sm ${
+                filters.adopted
+                  ? "bg-[#D4B37A] border-[#D4B37A] text-white font-bold"
+                  : "bg-white border-[#DAC193] text-[#311c1c] hover:bg-[#F7F1E7]"
+              }`}
+            >
+              Mostrar animales adoptados
+            </button>
+          </div>
         </div>
 
-        <button
-          className="mt-6 px-4 py-3 bg-green-600 text-white font-bold rounded-lg w-full text-center"
-          onClick={onClose}
-        >
-          Cerrar
-        </button>
+        <div className="mt-8 flex flex-col md:flex-row gap-3">
+          <button
+            onClick={() =>
+              setFilters({
+                type: [],
+                sex: [],
+                size: [],
+                adopted: false,
+              })
+            }
+            className="w-full md:w-1/2 rounded-xl bg-[#E8B4B4] py-3 text-white font-bold transition hover:opacity-90"
+          >
+            Limpiar filtros
+          </button>
+
+          <button
+            className="w-full md:w-1/2 rounded-xl bg-[#B7C979] py-3 text-white font-bold text-[15px] transition hover:opacity-90"
+            onClick={onClose}
+          >
+            Cerrar
+          </button>
+        </div>
       </div>
     </div>
   );

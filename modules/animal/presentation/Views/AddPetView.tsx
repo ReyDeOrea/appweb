@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { PetSex, PetSize, PetType } from "../../domain/pet";
 import { addPetUseCase } from "../../application/addPet";
 import { saveS } from "../components/uploadImage";
+import { FaPaw } from "react-icons/fa";
+import { IoCameraOutline } from "react-icons/io5";
 
 const petTypes: PetType[] = ["perro", "gato"];
 const petSex: PetSex[] = ["macho", "hembra"];
@@ -103,209 +105,283 @@ export default function AddPetScreen() {
     }
   };
 
-  return (
-    <div className="flex flex-col bg-[#FDF8F0] min-h-screen pb-20">
+return (
+    <div className="min-h-screen bg-[#FDF8F0]">
+      <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <button
+            className="text-white font-bold hover:underline"
+            onClick={() => router.back()}
+          >
+            &#8592; Volver
+          </button>
 
-      <div className="bg-[#B7C979] py-6 mb-6">
-        <div className="flex justify-center items-center gap-4">
-            <button
-          className="text-black mr-4"
-          onClick={() => router.back()}
-        >
-          &#8592; Volver
-        </button>
-          <h1 className="text-white font-bold text-4xl">Animaland</h1>
-          <span className="text-white text-4xl">🐾</span>
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <span className="text-white text-3xl md:text-4xl">
+              <FaPaw/>
+            </span>
+          </div>
+
+          <div className="w-[70px]" />
         </div>
       </div>
 
-      {img.length > 0 && (
-        <>
-          <div className="relative flex justify-center mb-4">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 items-start">
 
-            <button
-              onClick={() =>
-                setBannerPage(
-                  bannerPage === 0 ? img.length - 1 : bannerPage - 1
-                )
-              }
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
-            >
-              ‹
-            </button>
+          <div className="xl:col-span-3 bg-white rounded-2xl shadow-md p-6 md:p-8">
+            <h2 className="text-center font-bold text-2xl text-[#311c1c] mb-8">
+              Registrar mascota
+            </h2>
 
-            <img
-              src={img[bannerPage]}
-              className="h-[42vw] rounded-xl object-cover"
-            />
+            <div className="space-y-8">
+              <div>
+                <h3 className="font-bold text-lg text-[#311c1c] mb-4">
+                  Información básica
+                </h3>
 
-            <button
-              onClick={() =>
-                setBannerPage(
-                  bannerPage === img.length - 1 ? 0 : bannerPage + 1
-                )
-              }
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-1 rounded-full"
-            >
-              ›
-            </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="md:col-span-2">
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Tipo de animal
+                    </label>
+                    <div className="flex gap-3">
+                      {petTypes.map((t) => (
+                        <button
+                          key={t}
+                          className={`px-4 py-2 text-black rounded-lg border transition ${
+                            type === t
+                              ? "bg-[#E5DCCC] border-[#DAC193]"
+                              : "bg-white border-[#DAC193]"
+                          }`}
+                          onClick={() => setType(t)}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
+                  <div>
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Nombre del animal
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Nombre del animal"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Edad
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Edad"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Sexo
+                    </label>
+                    <div className="flex gap-3 flex-wrap">
+                      {petSex.map((s) => (
+                        <button
+                          key={s}
+                          className={`px-4 py-2 text-black rounded-lg border transition ${
+                            sex === s
+                              ? "bg-[#E5DCCC] border-[#DAC193]"
+                              : "bg-white border-[#DAC193]"
+                          }`}
+                          onClick={() => setSex(s)}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Tamaño
+                    </label>
+                    <div className="flex gap-3 flex-wrap">
+                      {Object.values(PetSize).map((s) => (
+                        <button
+                          key={s}
+                          className={`px-4 py-2 text-black rounded-lg border transition ${
+                            size === s
+                              ? "bg-[#E5DCCC] border-[#DAC193]"
+                              : "bg-white border-[#DAC193]"
+                          }`}
+                          onClick={() => setSize(s)}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Raza
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Raza"
+                      value={breed}
+                      onChange={(e) => setBreed(e.target.value)}
+                      className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Ubicación
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ubicación"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-gray-600 text-sm font-medium mb-2">
+                      Descripción
+                    </label>
+                    <textarea
+                      placeholder="Da una breve descripción"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-28 resize-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-bold text-lg text-[#311c1c] mb-4">Salud</h3>
+                <textarea
+                  placeholder="Alergias / Vacunas / Discapacidad"
+                  value={healthInfo}
+                  onChange={(e) => setHealthInfo(e.target.value)}
+                  className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-24 resize-none"
+                />
+              </div>
+
+              <div>
+                <h3 className="font-bold text-lg text-[#311c1c] mb-4">
+                  Contacto
+                </h3>
+                <input
+                  type="text"
+                  placeholder="Número de teléfono"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
+                />
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-4 pt-2">
+                <button
+                  className={`flex-1 bg-[#B7C979] hover:bg-[#aabd68] text-white font-semibold py-3 rounded-xl transition ${
+                    isSaving ? "opacity-50" : ""
+                  }`}
+                  onClick={savePet}
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Guardando..." : "Guardar mascota"}
+                </button>
+
+                <button
+                  className="flex-1 bg-[#E8B4B4] hover:bg-[#dda3a3] text-white font-semibold py-3 rounded-xl transition"
+                  onClick={() => router.back()}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="flex justify-center gap-2 mb-4">
-            {img.map((_, i) => (
-              <div
-                key={i}
-                className={`w-2 h-2 rounded-full ${
-                  bannerPage === i ? "bg-black" : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-        </>
-      )}
 
-      <div className="px-5 flex flex-col gap-5">
+          <div className="xl:col-span-2 bg-white rounded-2xl shadow-md p-5 xl:sticky xl:top-6">
+            <div className="flex justify-center mb-6">
+              <label className="bg-[#D4B37A] hover:bg-[#c8a66b] transition px-5 py-3 rounded-xl flex items-center gap-2 cursor-pointer font-medium text-white">
+                <span><IoCameraOutline /></span>
+                <span>Subir 5 fotos</span>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                  onChange={pickImage}
+                />
+              </label>
+            </div>
 
-        <div className="flex justify-center">
-          <label className="bg-[#D4B37A] px-4 py-3 rounded-xl flex items-center gap-2 cursor-pointer">
-            <span>📷</span>
-            <span>Subir foto</span>
-            <input type="file" multiple accept="image/*" className="hidden" onChange={pickImage} />
-          </label>
-        </div>
+            {img.length > 0 ? (
+              <>
+                <div className="relative flex justify-center mb-4">
+                  <button
+                    onClick={() =>
+                      setBannerPage(
+                        bannerPage === 0 ? img.length - 1 : bannerPage - 1
+                      )
+                    }
+                    className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-2 rounded-full"
+                  >
+                    ‹
+                  </button>
 
-        <div className="flex flex-col gap-4">
-          <h2 className="text-center font-bold text-lg text-[#311c1c]">Información Básica</h2>
+                  <img
+                    src={img[bannerPage]}
+                    className="w-full h-[320px] md:h-[420px] rounded-2xl object-cover"
+                  />
 
-          <label className="text-gray-600 text-sm font-medium">Tipo de animal</label>
-          <div className="flex gap-2">
-            {petTypes.map((t) => (
-              <button
-                key={t}
-                className={`px-3 py-2 text-black rounded-lg border ${
-                  type === t ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"
-                }`}
-                onClick={() => setType(t)}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+                  <button
+                    onClick={() =>
+                      setBannerPage(
+                        bannerPage === img.length - 1 ? 0 : bannerPage + 1
+                      )
+                    }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-2 rounded-full"
+                  >
+                    ›
+                  </button>
+                </div>
 
-          <label className="text-gray-600 text-sm font-medium">Nombre del animal</label>
-          <input
-            type="text"
-            placeholder="Nombre del animal"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
-          />
-
-          <label className="text-gray-600 text-sm font-medium">Sexo</label>
-          <div className="flex gap-2">
-            {petSex.map((s) => (
-              <button
-                key={s}
-                className={`px-3 py-2 text-black rounded-lg border ${
-                  sex === s ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"
-                }`}
-                onClick={() => setSex(s)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-
-          <label className="text-gray-600 text-sm font-medium">Tamaño</label>
-          <div className="flex gap-2">
-            {Object.values(PetSize).map((s) => (
-              <button
-                key={s}
-                className={`px-3 py-2 text-black rounded-lg border ${
-                  size === s ? "bg-[#E5DCCC] border-[#DAC193]" : "bg-white border-[#DAC193]"
-                }`}
-                onClick={() => setSize(s)}
-              >
-                {s}
-              </button>
-            ))}
+                <div className="flex justify-center gap-2 mb-2">
+                  {img.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`w-2.5 h-2.5 rounded-full ${
+                        bannerPage === i ? "bg-black" : "bg-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="w-full h-[320px] md:h-[420px] rounded-2xl border-2  border-[#DAC193] flex items-center justify-center text-gray-500 text-center px-4">
+                Aquí se mostrarán las imágenes seleccionadas
+              </div>
+            )}
           </div>
 
-          <label className="text-gray-600 text-sm font-medium">Edad</label>
-          <input
-            type="text"
-            placeholder="Edad"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
-          />
-
-          <label className="text-gray-600 text-sm font-medium">Raza</label>
-          <input
-            type="text"
-            placeholder="Raza"
-            value={breed}
-            onChange={(e) => setBreed(e.target.value)}
-            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
-          />
-
-          <label className="text-gray-600 text-sm font-medium">Ubicación</label>
-          <input
-            type="text"
-            placeholder="Ubicación"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
-          />
-
-          <label className="text-gray-600 text-sm font-medium">Descripción</label>
-          <textarea
-            placeholder="Da una breve descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-24"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h2 className="text-center font-bold text-lg text-[#311c1c]">Salud</h2>
-          <textarea
-            placeholder="Alergias / Vacunas / Discapacidad"
-            value={healthInfo}
-            onChange={(e) => setHealthInfo(e.target.value)}
-            className="text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full h-20"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h2 className="text-black text-center font-bold text-lg ">Contacto</h2>
-          <input
-            type="text"
-            placeholder="Número de teléfono"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className=" text-black border border-[#E8E0D0] rounded-lg p-3 text-sm w-full"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2 mt-4">
-          <button
-            className={`bg-[#B7C979] text-white font-semibold py-3 rounded-xl ${
-              isSaving ? "opacity-50" : ""
-            }`}
-            onClick={savePet}
-            disabled={isSaving}
-          >
-            {isSaving ? "Guardando..." : "Guardar mascota"}
-          </button>
-
-          <button
-            className="bg-[#E8B4B4] text-white font-semibold py-3 rounded-xl"
-            onClick={() => router.back()}
-          >
-            Cancelar
-          </button>
         </div>
       </div>
     </div>
