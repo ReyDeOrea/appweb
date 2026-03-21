@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getFavoritesPetsUseCase } from "../../application/getFavoritesPets";
 import { Pet } from "../../domain/pet";
+import { FaPaw } from "react-icons/fa";
 
 export default function FavoritesPet() {
   const [favorites, setFavorites] = useState<Pet[]>([]);
@@ -40,7 +41,9 @@ export default function FavoritesPet() {
     return (
       <div
         key={item.id}
-        className={`bg-white border p-4 mb-4 rounded-2xl shadow w-5/12 mx-3 ${isAdopted ? "bg-gray-200" : ""} cursor-pointer`}
+        className={`bg-white border p-4 mb-4 rounded-2xl shadow w-5/12 mx-3 ${
+          isAdopted ? "bg-gray-200" : ""
+        } cursor-pointer`}
         onClick={() => {
           if (isAdopted) return;
           router.push(`/pet/profileanimal?pet=${encodeURIComponent(JSON.stringify(item))}`);
@@ -50,8 +53,11 @@ export default function FavoritesPet() {
           <img
             src={images[0]}
             alt={item.name}
-            className={`w-full h-80 object-cover rounded-2xl ${isAdopted ? "opacity-40" : ""}`}
+            className={`w-full h-80 object-cover rounded-2xl ${
+              isAdopted ? "opacity-40" : ""
+            }`}
           />
+
           {isAdopted && (
             <div className="absolute top-2 left-2 bg-yellow-400 px-2 py-1 rounded-lg">
               <span className="text-xs font-bold text-black">
@@ -60,9 +66,15 @@ export default function FavoritesPet() {
             </div>
           )}
         </div>
-        <h2 className="text-center font-bold text-lg mt-2 text-[#291110]">{item.name}</h2>
+
+        <h2 className="text-center font-bold text-lg mt-2 text-[#291110]">
+          {item.name}
+        </h2>
+
         {isAdopted && (
-          <p className="text-center text-sm font-bold text-gray-500 mt-1">No disponible</p>
+          <p className="text-center text-sm font-bold text-gray-500 mt-1">
+            No disponible
+          </p>
         )}
       </div>
     );
@@ -70,16 +82,33 @@ export default function FavoritesPet() {
 
   return (
     <div className="min-h-screen bg-[#FDF8F0]">
-      <div className="w-full h-16 bg-[#B7C979] flex items-center justify-center mb-4">
-        <div className="flex items-center justify-center gap-2">
-          <h1 className="text-white font-bold text-2xl">Animaland</h1>
-          <span className="text-white text-2xl">🐶</span>
+
+      <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+
+          <button
+            onClick={() => router.back()}
+            className="text-white font-bold hover:underline"
+          >
+            ← Volver
+          </button>
+
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <FaPaw className="text-white text-3xl md:text-4xl" />
+          </div>
+
+          <div className="w-[70px]" />
         </div>
       </div>
 
-      <div className="pb-10 flex flex-wrap justify-center">
+      <div className="pb-10 flex flex-wrap justify-center mt-6">
         {favorites.length === 0 ? (
-          <p className="text-center mt-10 text-gray-500 w-full">No tienes favoritos aún</p>
+          <p className="text-center mt-10 text-gray-500 w-full">
+            No tienes favoritos aún
+          </p>
         ) : (
           chunkArray(favorites, 2).map((pair, index) => (
             <div key={index} className="flex w-full justify-center">

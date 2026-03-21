@@ -7,9 +7,9 @@ import { validateUserProfile } from "../../application/valideteUpdate";
 import { checkUserExistsUpdate } from "../../application/checkUserExistsUpdate";
 import { updateUserProfile } from "../../application/updateUserProfile";
 import { getUserProfile } from "../../application/getUserProfile";
+import { FaPaw } from "react-icons/fa";
 
 export default function Account() {
-
   const [user, setUser] = useState<any>(null);
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
@@ -56,7 +56,7 @@ export default function Account() {
         username: username.trim(),
         phone: phone.trim(),
         email: email.trim().toLowerCase(),
-        avatar_url: avatarUrl
+        avatar_url: avatarUrl,
       });
 
       setUser(updated);
@@ -64,7 +64,6 @@ export default function Account() {
       alert("Perfil actualizado");
 
       router.push("/pet");
-
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -74,89 +73,95 @@ export default function Account() {
 
   if (!user) {
     return (
-      <div className="p-6">
+      <div className="p-6 text-black">
         No hay usuario logueado
       </div>
     );
   }
 
   return (
+    <div className="min-h-screen bg-[#FDF8F0]">
+      <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="text-white font-bold hover:underline"
+          >
+            &#8592; Volver
+          </button>
 
-    <div className="min-h-screen bg-[#FDF8F0] flex flex-col items-center">
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <span className="text-white text-3xl md:text-4xl">
+              <FaPaw />
+            </span>
+          </div>
 
-      <div className="w-full h-[100px] bg-[#B7C979] flex items-center justify-center relative">
-
-        <button
-          onClick={() => router.back()}
-          className="absolute left-4 top-6 text-white"
-        >
-           &#8592; Volver
-        </button>
-
-        <div className="flex items-center gap-2 text-white font-bold text-2xl">
-          Animaland
+          <div className="w-[70px]" />
         </div>
-
       </div>
 
-      <div className="w-[90%] max-w-md bg-white rounded-2xl p-6 mt-6 shadow">
+      <div className="flex justify-center items-start px-4 py-10">
+        <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-md">
+          <h2 className="text-2xl font-bold text-center text-black mb-6">
+            Mi perfil
+          </h2>
 
-        <div className="flex justify-center mb-6">
-          <AvatarView
-            size={120}
-            url={avatarUrl}
-            onUpload={(url: string) => setAvatarUrl(url)}
-          />
+          <div className="flex justify-center mb-6">
+            <AvatarView
+              size={120}
+              url={avatarUrl}
+              onUpload={(url: string) => setAvatarUrl(url)}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-sm text-black mb-1 font-medium">
+              Correo
+            </label>
+
+            <input
+              className="w-full p-3 rounded-lg border border-[#E8E0D0] mb-4 text-black placeholder:text-gray-400"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Correo electrónico"
+              type="email"
+            />
+
+            <label className="text-sm text-black mb-1 font-medium">
+              Nombre de usuario
+            </label>
+
+            <input
+              className="w-full p-3 rounded-lg border border-[#E8E0D0] mb-4 text-black placeholder:text-gray-400"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Tu nombre"
+            />
+
+            <label className="text-sm text-black mb-1 font-medium">
+              Teléfono
+            </label>
+
+            <input
+              className="w-full p-3 rounded-lg border border-[#E8E0D0] mb-4 text-black placeholder:text-gray-400"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Número de teléfono"
+            />
+          </div>
+
+          <button
+            onClick={UpdateProfile}
+            disabled={loading}
+            className="w-full bg-[#B7C979] p-4 rounded-xl mt-2 text-white font-bold hover:opacity-90 transition"
+          >
+            {loading ? "Guardando..." : "Actualizar Perfil"}
+          </button>
         </div>
-
-        <div className="flex flex-col">
-
-          <label className="text-sm text-gray-500 mb-1 font-medium">
-            Correo
-          </label>
-
-          <input
-            className="w-full p-3 rounded-lg border border-[#E8E0D0] mb-4"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Correo electrónico"
-            type="email"
-          />
-
-          <label className="text-sm text-gray-500 mb-1 font-medium">
-            Nombre de usuario
-          </label>
-
-          <input
-            className="w-full p-3 rounded-lg border border-[#E8E0D0] mb-4"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Tu nombre"
-          />
-
-          <label className="text-sm text-gray-500 mb-1 font-medium">
-            Teléfono
-          </label>
-
-          <input
-            className="w-full p-3 rounded-lg border border-[#E8E0D0] mb-4"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Número de teléfono"
-          />
-
-        </div>
-
-        <button
-          onClick={UpdateProfile}
-          disabled={loading}
-          className="w-full bg-[#B7C979] p-4 rounded-xl mt-2 text-white font-bold hover:opacity-90 transition"
-        >
-          {loading ? "Guardando..." : "Actualizar Perfil"}
-        </button>
-
       </div>
-
     </div>
   );
 }

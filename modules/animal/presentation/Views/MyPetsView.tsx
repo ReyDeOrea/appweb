@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { getUserPets } from "../../../user/application/getUserPets";
 import { uploadImagesPet } from "../../application/uploadImagesPet";
 import DeletePetModal from "../components/DeletePetModal";
+import { FaPaw } from "react-icons/fa";
 
 export default function MyPetsScreen() {
-
   const [pets, setPets] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
@@ -38,14 +38,35 @@ export default function MyPetsScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDF8F0] relative">
-      <div className="w-full h-16 bg-[#B7C979] flex items-center justify-center mb-4">
-        <h1 className="text-white font-bold text-2xl">Animaland</h1>
+    <div className="min-h-screen bg-[#FDF8F0]">
+
+      
+      <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+
+          <button
+            onClick={() => router.back()}
+            className="text-white font-bold hover:underline"
+          >
+            ← Volver
+          </button>
+
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <FaPaw className="text-white text-3xl md:text-4xl" />
+          </div>
+
+          <div className="w-[70px]" />
+        </div>
       </div>
 
-      <div className="px-4 pb-32">
+      <div className="px-4 pb-32 mt-6">
         {pets.length === 0 ? (
-          <p className="text-center mt-10 text-gray-500">No tienes mascotas registradas</p>
+          <p className="text-center mt-10 text-gray-500">
+            No tienes mascotas registradas
+          </p>
         ) : (
           chunks.map((row, rowIndex) => (
             <div key={rowIndex} className="flex flex-wrap justify-center gap-6 mb-8">
@@ -60,10 +81,13 @@ export default function MyPetsScreen() {
                       <img
                         src={images[0]}
                         alt={item.name}
-                        className="w-full h-96 sm:h-96 md:h-96 object-cover rounded-lg bg-[#F5F5F5] mb-4"
+                        className="w-full h-96 object-cover rounded-lg bg-[#F5F5F5] mb-4"
                       />
                     )}
-                    <h2 className="font-bold text-xl text-black mb-3">{item.name}</h2>
+
+                    <h2 className="font-bold text-xl text-black mb-3">
+                      {item.name}
+                    </h2>
 
                     <div className="flex gap-3 mt-auto">
                       <button
@@ -92,7 +116,7 @@ export default function MyPetsScreen() {
 
       <button
         onClick={() => router.push("/pet/addpet")}
-        className="fixed bottom-[60px] right-5 w-[60px] h-[60px] bg-[#8cb56e] rounded-full text-white text-[30px] flex items-center justify-center"
+        className="fixed bottom-[60px] right-5 w-[60px] h-[60px] bg-[#8cb56e] rounded-full text-white text-[30px] flex items-center justify-center shadow-lg hover:scale-105 transition"
       >
         +
       </button>
@@ -103,7 +127,6 @@ export default function MyPetsScreen() {
         petId={selectedPetId}
         onDeleted={loadPets}
       />
-
     </div>
   );
 }

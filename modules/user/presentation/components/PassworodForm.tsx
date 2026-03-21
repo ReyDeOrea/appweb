@@ -7,8 +7,13 @@ import { ResetPasswordUseCase } from "../../application/resetPassword";
 import { VerifyUserUseCase } from "../../application/verifyUserCase";
 import { UserProfile } from "../../domain/user";
 import { SupabaseUserRepository } from "../../infraestructure/userDataSource";
+import { useRouter } from "next/navigation";
+
+import { FaUser, FaEnvelope, FaPaw } from "react-icons/fa";
 
 export default function Password() {
+  const router = useRouter();
+
   const userRepo = new SupabaseUserRepository();
   const verifyUserUseCase = new VerifyUserUseCase(userRepo);
   const resetPasswordUseCase = new ResetPasswordUseCase(userRepo);
@@ -41,7 +46,9 @@ export default function Password() {
         newPassword: newPass,
         confirmPassword: confirmPass,
       });
+
       alert("Contraseña actualizada correctamente");
+
       setModalVisible(false);
       setUsername("");
       setEmail("");
@@ -53,62 +60,96 @@ export default function Password() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center p-4">
+      <div className="min-h-screen bg-[#FDF8F0]">
+         <div className="bg-[#B7C979] py-6 shadow-md">
+           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+             <button
+               onClick={() => router.back()}
+               className="text-white font-bold hover:underline"
+             >
+               &#8592; Volver
+             </button>
+   
+             <div className="flex items-center gap-3">
+               <h1 className="text-white font-bold text-3xl md:text-4xl">
+                 Animaland
+               </h1>
+               <span className="text-white text-3xl md:text-4xl">
+                 <FaPaw />
+               </span>
+             </div>
+   
+             <div className="w-[70px]" />
+           </div>
+         </div>
+
+   <div className="flex justify-center mt-4">
+  <Image
+    src="/images/Cat.jpeg"
+    alt="Cat"
+    width={600}
+    height={300}
+    className="w-[90%] max-w-md h-[220px] object-cover rounded-2xl shadow-md"
+  />
+</div>
+
+  
+      <div className="max-w-md mx-auto px-5 py-6">
+
+        <p className="text-center text-gray-900 font-semibold mb-5">
+          Recupera tu contraseña
+        </p>
+
+        {/* INPUTS */}
+        <div className="space-y-3">
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaUser  style={{ color: '#D4B37A', fontSize: '20px' }} />
+            <input
+              type="text"
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="ml-3 flex-1 outline-none text-gray-900"
+            />
+          </div>
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaEnvelope  style={{ color: '#D4B37A', fontSize: '20px' }} />
+            <input
+              type="email"
+              placeholder="Correo electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="ml-3 flex-1 outline-none text-gray-900"
+            />
+          </div>
+
+        </div>
+
+        <div className="mt-6">
+          <button
+            onClick={handleVerify}
+            disabled={loading}
+            className="w-full bg-[#B7C979] py-3 rounded-xl text-white font-bold text-lg hover:bg-[#a5b86a] transition disabled:opacity-50"
+          >
+            {loading ? "Cargando..." : "Verificar"}
+          </button>
+        </div>
+
       
-      <div className="bg-yellow-400 w-full py-4 flex justify-center items-center mb-5">
-        <h1 className="text-white font-bold text-4xl mr-2">Animaland</h1>
-        <span className="material-icons text-white text-3xl">pets</span>
+        <div className="flex justify-center mt-5 text-gray-900">
+          <button
+            onClick={() => router.back()}
+            className="font-bold underline text-black"
+          >
+            Volver
+          </button>
+        </div>
+
       </div>
 
-      <div className="mb-5">
-        <Image
-          src="/images/Cat.jpeg"
-          alt="Cat"
-          width={200}
-          height={200}
-          className="rounded-full mx-auto"
-        />
-      </div>
-
-      <p className="text-gray-600 text-sm mb-5 text-center">
-        Ingresa tu usuario y correo
-      </p>
-
-      <div className="w-full max-w-md space-y-4">
-        <input
-          type="text"
-          placeholder="Usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
-
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
-
-        <button
-          onClick={handleVerify}
-          disabled={loading}
-          className={`w-full py-3 rounded-xl font-bold text-white ${
-            loading ? "bg-yellow-300 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"
-          }`}
-        >
-          {loading ? "Cargando..." : "Verificar"}
-        </button>
-
-        <button
-          onClick={() => window.history.back()}
-          className="w-full text-center text-gray-500 underline font-bold mt-2"
-        >
-          Volver
-        </button>
-      </div>
-
+      {/* MODAL */}
       <NewPasswordModal
         visible={modalVisible}
         loading={loading}

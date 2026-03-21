@@ -52,9 +52,7 @@ export default function RequestsReceived() {
   const aceptar = async (Rid: string, pet_id: number) => {
     try {
       await updateStatus.execute(Rid, "aceptado");
-
       await repository.updateStatusPet(pet_id, { adopted: true });
-
       loadRequests();
     } catch (error) {
       console.error("Error al aceptar solicitud:", error);
@@ -64,15 +62,18 @@ export default function RequestsReceived() {
   const rechazar = async (id: string) => {
     try {
       await updateStatus.execute(id, "rechazado");
-
       loadRequests();
     } catch (error) {
       console.error("Error al rechazar solicitud:", error);
     }
   };
 
-   const verSolicitud = (request: any) => {
-    router.push(`/adoption/viewRequestForm?request=${encodeURIComponent(JSON.stringify(request))}`);
+  const verSolicitud = (request: any) => {
+    router.push(
+      `/adoption/viewRequestForm?request=${encodeURIComponent(
+        JSON.stringify(request)
+      )}`
+    );
   };
 
   const llamarAdoptante = (telefono: string) => {
@@ -80,7 +81,7 @@ export default function RequestsReceived() {
   };
 
   return (
-    <div className="pb-24">
+    <div className="pb-24 bg-white min-h-screen">
       {requests.length === 0 ? (
         <p className="text-center mt-5 text-gray-500 text-lg">
           No hay solicitudes
@@ -90,19 +91,19 @@ export default function RequestsReceived() {
           <div
             key={item.id}
             onClick={() => verSolicitud(item)}
-            className="p-4 border-b bg-white cursor-pointer hover:bg-gray-50"
+            className="p-4 border-b bg-white cursor-pointer hover:bg-gray-100 opacity-100"
           >
-            <p className="text-base mb-1">
+            <p className="text-base mb-1 text-black">
               <span className="font-bold">Mascota: </span>
               {item.pet_name}
             </p>
 
-            <p className="text-base mb-1">
+            <p className="text-base mb-1 text-black">
               <span className="font-bold">Adoptante: </span>
               {item.adoptante_nombre} {item.adoptante_apellido}
             </p>
 
-            <p className="text-base mb-1">
+            <p className="text-base mb-1 text-black">
               <span className="font-bold">Estado: </span>
               {item.estado}
             </p>
@@ -114,14 +115,14 @@ export default function RequestsReceived() {
               >
                 <button
                   onClick={() => aceptar(item.id, item.pet_id)}
-                  className="bg-green-300 px-3 py-2 rounded font-bold"
+                  className="bg-green-500 text-white px-3 py-2 rounded font-bold hover:bg-green-600"
                 >
                   Aceptar
                 </button>
 
                 <button
                   onClick={() => rechazar(item.id)}
-                  className="bg-red-300 px-3 py-2 rounded font-bold"
+                  className="bg-red-500 text-white px-3 py-2 rounded font-bold hover:bg-red-600"
                 >
                   Rechazar
                 </button>
@@ -134,7 +135,7 @@ export default function RequestsReceived() {
                   e.stopPropagation();
                   llamarAdoptante(item.adoptante_telefono);
                 }}
-                className="bg-blue-200 mt-3 px-3 py-2 rounded font-bold"
+                className="bg-blue-500 text-white mt-3 px-3 py-2 rounded font-bold hover:bg-blue-600"
               >
                 Llamar al adoptante ({item.adoptante_telefono})
               </button>

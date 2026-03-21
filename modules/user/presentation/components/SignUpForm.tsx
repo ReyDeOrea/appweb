@@ -6,9 +6,9 @@ import { useState } from "react";
 import { validateSignUpData } from "../../application/validateSingUpData";
 import { registerUser } from "../../application/registerUser";
 import { checkUserExists } from "../../application/checkUserExists";
+import { FaUser, FaPhone, FaEnvelope, FaLock, FaPaw } from "react-icons/fa";
 
 export default function SignUp() {
-
   const router = useRouter();
 
   const [usuario, setUsuario] = useState("");
@@ -20,9 +20,7 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
-
     try {
-
       setLoading(true);
 
       validateSignUpData({
@@ -30,13 +28,13 @@ export default function SignUp() {
         phone: numt,
         email,
         password,
-        confirmPassword
+        confirmPassword,
       });
 
       await checkUserExists(
-         email.trim().toLowerCase(),
+        email.trim().toLowerCase(),
         usuario.trim(),
-         numt.trim()
+        numt.trim()
       );
 
       await registerUser({
@@ -44,153 +42,148 @@ export default function SignUp() {
         username: usuario,
         password,
         phone: numt,
-        avatar_url: avatarUrl
+        avatar_url: avatarUrl,
       });
 
       alert("Cuenta creada");
-
       router.replace("/pet");
-
     } catch (err: any) {
-
       alert(err.message);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   return (
+    <div className="min-h-screen bg-gray-100">
 
-    <div className="min-h-screen bg-[#FDF8F0] flex flex-col items-center pb-10">
+      {/* HEADER */}
+      <div className="bg-[#B7C979] py-6 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
 
+          <button
+            onClick={() => router.back()}
+            className="text-white font-bold hover:underline"
+          >
+            ← Volver
+          </button>
 
-      <div className="w-full h-[90px] pt-8 bg-[#B7C979] flex items-center justify-center relative">
+          <div className="flex items-center gap-3">
+            <h1 className="text-white font-bold text-3xl md:text-4xl">
+              Animaland
+            </h1>
+            <FaPaw className="text-white text-3xl md:text-4xl" />
+          </div>
 
-        <button
-          onClick={() => router.back()}
-          className="absolute left-4 top-10 text-white"
-        >
-          &#8592; Volver
-        </button>
-
-        <div className="flex items-center text-white font-bold text-3xl gap-1">
-          Animaland
+          <div className="w-[70px]" />
         </div>
-
       </div>
 
-      <Image
-        src="/images/DogAndCat.jpeg"
-        alt="dog and cat"
-        width={600}
-        height={200}
-        className="w-[90%] h-[200px] object-cover rounded-lg my-4"
-      />
-
-      <p className="text-center text-gray-600 mb-2">
-        Crea una nueva cuenta ahora
-      </p>
-
-      <div className="w-full max-w-md px-5">
-
-
-        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
-
-          <input
-            className="ml-2 flex-1 outline-none"
-            placeholder="Usuario"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
-
-        </div>
-
-        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
-
-          <input
-            className="ml-2 flex-1 outline-none"
-            placeholder="Número de teléfono"
-            value={numt}
-            onChange={(e) => setNumT(e.target.value)}
-          />
-
-        </div>
-
-        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
-
-          <input
-            className="ml-2 flex-1 outline-none"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-        </div>
-
-        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
-
-          <input
-            type="password"
-            className="ml-2 flex-1 outline-none"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-        </div>
-
-        <div className="flex items-center border border-[#DAC193] rounded-xl px-3 py-3 bg-white my-2">
-
-          <input
-            type="password"
-            className="ml-2 flex-1 outline-none"
-            placeholder="Confirmar contraseña"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-        </div>
-
-      </div>
-
-      <div className="flex items-center justify-center mt-4">
-
+      {/* IMAGEN */}
+      <div className="flex justify-center mt-6">
         <Image
-          src="/images/DOG.png"
-          alt="dog"
-          width={60}
-          height={60}
-          className="mr-3"
+          src="/images/DogAndCat.jpeg"
+          alt="dog and cat"
+          width={600}
+          height={300}
+          className="w-[90%] max-w-md h-[220px] object-cover rounded-2xl shadow-md"
         />
-
-        <button
-          onClick={handleRegister}
-          disabled={loading}
-          className="bg-[#dee8b4] px-12 py-3 rounded-2xl text-white font-bold text-lg hover:opacity-90"
-        >
-          {loading ? "Creando..." : "Crear cuenta"}
-        </button>
-
       </div>
 
-      <div className="flex mt-4">
-        <p>¿Ya tienes una cuenta?</p>
+      {/* CONTENIDO */}
+      <div className="max-w-md mx-auto px-5 py-6">
 
-        <button
-          onClick={() => router.push("/user/login")}
-          className="font-bold underline ml-1"
-        >
-          Iniciar sesión
-        </button>
+        <p className="text-center text-gray-900 font-semibold mb-5">
+          Crea una nueva cuenta
+        </p>
+
+        <div className="space-y-3">
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaUser style={{ color: "#D4B37A", fontSize: "20px" }} />
+            <input
+              className="ml-3 flex-1 outline-none text-gray-900"
+              placeholder="Usuario"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaPhone style={{ color: "#D4B37A", fontSize: "20px" }} />
+            <input
+              className="ml-3 flex-1 outline-none text-gray-900"
+              placeholder="Número de teléfono"
+              value={numt}
+              onChange={(e) => setNumT(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaEnvelope style={{ color: "#D4B37A", fontSize: "20px" }} />
+            <input
+              className="ml-3 flex-1 outline-none text-gray-900"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaLock style={{ color: "#D4B37A", fontSize: "20px" }} />
+            <input
+              type="password"
+              className="ml-3 flex-1 outline-none text-gray-900"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
+            <FaLock style={{ color: "#D4B37A", fontSize: "20px" }} />
+            <input
+              type="password"
+              className="ml-3 flex-1 outline-none text-gray-900"
+              placeholder="Confirmar contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+
+        </div>
+
+        {/* BOTÓN */}
+        <div className="mt-6 flex items-center justify-center gap-3">
+
+          <Image
+            src="/images/DOG.png"
+            alt="dog"
+            width={50}
+            height={50}
+          />
+
+          <button
+            onClick={handleRegister}
+            disabled={loading}
+            className="bg-[#B7C979] px-8 py-3 rounded-xl text-white font-bold text-lg hover:bg-[#a5b86a] transition"
+          >
+            {loading ? "Creando..." : "Crear cuenta"}
+          </button>
+
+        </div>
+
+        <div className="flex justify-center mt-5 text-gray-900">
+          <p>¿Ya tienes una cuenta?</p>
+          <button
+            onClick={() => router.push("/user/login")}
+            className="font-bold underline ml-2 text-black"
+          >
+            Iniciar sesión
+          </button>
+        </div>
 
       </div>
-
     </div>
-
   );
-
 }

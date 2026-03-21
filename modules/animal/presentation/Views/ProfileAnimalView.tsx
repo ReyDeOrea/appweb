@@ -141,24 +141,28 @@ export default function ProfileAnimal() {
 
  return (
   <div className="min-h-screen bg-[#F3F2ED]">
-    <div className="bg-[#B8C76F] shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between">
-        <button
-          onClick={() => router.back()}
-          className="text-white font-bold hover:underline"
-        >
-          ← Volver
-        </button>
+  <div className="bg-[#B7C979] shadow-md">
+  <div className="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between">
 
-        <h1 className="text-white text-3xl md:text-4xl font-bold text-center">
-          {mascota.name}
-        </h1>
+    <button
+      onClick={() => router.back()}
+      className="text-white font-bold hover:underline"
+    >
+      ← Volver
+    </button>
+
+    <div className="flex items-center gap-3">
+      <h1 className="text-white text-2xl md:text-3xl font-bold">
+        {mascota.name}
+      </h1>
+      <FaPaw className="text-white text-2xl md:text-3xl" />
+    </div>
 
         <button
           onClick={handleToggleFavorite}
           className="text-white text-2xl"
         >
-          {isFavorite ?  <FaHeart  style={{ color: '#ffffff', fontSize: '24px' }} /> : <FaRegHeart style={{ color: '#ffffff', fontSize: '24px' }} />
+          {isFavorite ?  <FaHeart  style={{ color: '#ffffff', fontSize: '30px' }} /> : <FaRegHeart style={{ color: '#ffffff', fontSize: '30px' }} />
 }
         </button>
       </div>
