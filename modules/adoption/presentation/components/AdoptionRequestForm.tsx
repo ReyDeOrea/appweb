@@ -315,7 +315,7 @@ export default function AdoptionForm() {
 
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">
-                    10. ¿Quién cuidará cuando no estés?
+                    10. ¿Quién cuidará a la mascota cuando no estés?
                   </label>
                   <input
                     className={inputStyle}
@@ -337,18 +337,19 @@ export default function AdoptionForm() {
 
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">
-                    12. ¿Presupuesto mensual para la mascota?
+                    12. ¿Cúal es tu presupuesto mensual?
                   </label>
                   <input
                     className={inputStyle}
                     value={pregunta_12}
                     onChange={(e) => setPregunta12(e.target.value)}
+                    type="number"
                   />
                 </div>
 
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">
-                    13. ¿Aceptas esterilización/castración si es necesario?
+                    13.  ¿Aceptas esterilización/castración si es necesario?
                   </label>
                   <input
                     className={inputStyle}
