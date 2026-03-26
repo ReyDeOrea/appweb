@@ -70,7 +70,13 @@ export default function CatalogView() {
     { type: "static", image: "/images/DOG.png" },
   ];
 
-  const adoptedBanners: BannerItem[] = adoptedPets.map(p => {
+const adoptedBanners: BannerItem[] = (() => {
+  if (adoptedPets.length === 0) return [];
+
+  const shuffled = [...adoptedPets].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, 3);
+
+  return selected.map(p => {
     let firstImage = "";
     try {
       const arr =
@@ -83,8 +89,9 @@ export default function CatalogView() {
     }
     return { type: "adopted", image: firstImage, name: p.name };
   });
+})();
 
-  const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
+const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
 
   const filteredPets = useMemo(() => {
     return pets.filter(p => {
