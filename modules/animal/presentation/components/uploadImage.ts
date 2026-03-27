@@ -46,22 +46,23 @@ export async function saveS(file: { uri: string }): Promise<string | null> {
   try {
     if (!file?.uri) throw new Error('No file URI provided');
 
-    const fileExt = file.uri.split('.').pop() ?? 'jpeg';
-    const fileName = `${Date.now()}.${fileExt}`;
-
-    const arrayBuffer = await fetch(file.uri).then(res => res.arrayBuffer());
-
-    const { data, error } = await supabase
-      .storage
-      .from('IMG')
-      .upload(`pet/${fileName}`, arrayBuffer, {
-        contentType: 'image/jpeg',
+   const res = await fetch(file.uri);
+    const blob = await res.blob();
+    const fileName = `${Date.now()}-${Math.floor(Math.random() * 10000)}.jpg`;
+    const { data, error } = await supabase.storage
+      .from("IMG")
+      .upload(`pet/${fileName}`, blob, {
+        contentType: "image/jpeg",
       });
 
     if (error) throw error;
-    return `https://hrojphcqktmijvagyrha.supabase.co/storage/v1/object/public/IMG/pet/${fileName}`;
+    const { data: publicUrl } = supabase.storage
+      .from("IMG")
+      .getPublicUrl(`pet/${fileName}`);
+
+    return publicUrl.publicUrl;
   } catch (e) {
-    console.log('ERROR EN saveS:', e);
+    console.log("ERROR EN saveS:", e);
     return null;
   }
 }
