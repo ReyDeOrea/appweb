@@ -30,7 +30,6 @@ export default function LoginForm() {
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* HEADER */}
       <div className="bg-[#B7C979] py-6 shadow-md">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
 
@@ -52,7 +51,6 @@ export default function LoginForm() {
         </div>
       </div>
 
-      {/* IMAGEN CENTRADA */}
       <div className="flex justify-center mt-6">
         <Image
           src="/images/DogAndCat.jpeg"
@@ -63,17 +61,13 @@ export default function LoginForm() {
         />
       </div>
 
-      {/* CONTENIDO */}
       <div className="max-w-md mx-auto px-5 py-6">
 
         <p className="text-center text-gray-900 font-semibold mb-5">
           Accede a tu cuenta
         </p>
 
-        {/* INPUTS */}
         <div className="space-y-3">
-
-          {/* Usuario */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaUser style={{ color: "#D4B37A", fontSize: "20px" }} />
             <input
@@ -85,7 +79,6 @@ export default function LoginForm() {
             />
           </div>
 
-          {/* Password */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaLock style={{ color: "#D4B37A", fontSize: "20px" }} />
             <input
@@ -99,7 +92,6 @@ export default function LoginForm() {
 
         </div>
 
-        {/* BOTÓN */}
         <div className="mt-6">
           <button
             onClick={handleLogin}
@@ -110,7 +102,6 @@ export default function LoginForm() {
           </button>
         </div>
 
-        {/* LINKS */}
         <div className="flex flex-col items-center mt-5 gap-2 text-gray-900">
 
           <button
@@ -129,9 +120,7 @@ export default function LoginForm() {
               Regístrate
             </button>
           </div>
-
         </div>
-
       </div>
     </div>
   );

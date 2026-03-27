@@ -66,8 +66,7 @@ export default function CatalogView() {
 
   const staticBanners: BannerItem[] = [
     { type: "static", image: "/images/D.png" },
-    { type: "static", image: "/images/Cat.jpeg" },
-    { type: "static", image: "/images/DOG.png" },
+    { type: "static", image: "/images/B1.png" },
   ];
 
 const adoptedBanners: BannerItem[] = (() => {
@@ -214,7 +213,6 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
   </h2>
       </div>
 
-      {/* barra para buscar*/}
       <div className="bg-[#E5DCCC] rounded-xl p-2 mb-6 flex items-center border border-[#7E6950]">
          <button className="text-[#5B4000] px-4 py-2 hover:bg-[#D9C9A3] rounded-lg transition-colors">
        <IoIosSearch className="text-3xl"/>
@@ -235,7 +233,6 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
         </button>
       </div>
 
-      {/* Banner  */}
       <div className="mb-8">
         <h3 className="text-[#7E6950] font-semibold mb-3 text-lg">🌟 Destacados</h3>
         <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
@@ -267,7 +264,6 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
           ))}
         </div>
         
-        {/* Dots indicator */}
         <div className="flex justify-center mt-3">
           {bannerImages.map((_, idx) => (
             <div
@@ -280,7 +276,6 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
         </div>
       </div>
 
-      {/* Pets grid horizontal */}
       <div>
         <h3 className="text-[#7E6950] font-semibold mb-3 text-lg">
           🐾 Mascotas disponibles ({filteredPets.length})
@@ -296,7 +291,6 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
         </div>
       </div>
 
-      {/* Modals */}
       <FilterModal
         visible={filterOpen}
         onClose={() => setFilterOpen(false)}
@@ -304,7 +298,6 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
         setFilters={setFilters}
       />
 
-      {/* Estilos para ocultar scrollbar */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

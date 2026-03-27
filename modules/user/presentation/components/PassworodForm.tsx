@@ -100,7 +100,6 @@ export default function Password() {
           Recupera tu contraseña
         </p>
 
-        {/* INPUTS */}
         <div className="space-y-3">
 
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
@@ -149,7 +148,6 @@ export default function Password() {
 
       </div>
 
-      {/* MODAL */}
       <NewPasswordModal
         visible={modalVisible}
         loading={loading}

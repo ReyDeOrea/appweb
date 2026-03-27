@@ -67,7 +67,6 @@ export default function AvatarView({ url, size = 150, onUpload }: Props) {
   return (
     <div className="flex flex-col items-center gap-4">
       
-      {/* Avatar */}
       {avatarUrl ? (
         <img
           src={avatarUrl}
@@ -82,7 +81,6 @@ export default function AvatarView({ url, size = 150, onUpload }: Props) {
         />
       )}
 
-      {/* Upload */}
       <label className="cursor-pointer">
         <input
           type="file"
@@ -96,7 +94,6 @@ export default function AvatarView({ url, size = 150, onUpload }: Props) {
           {uploading ? "Uploading..." : "Upload"}
         </span>
       </label>
-
     </div>
   )
 }
