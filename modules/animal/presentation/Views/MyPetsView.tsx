@@ -37,13 +37,59 @@ export default function MyPetsScreen() {
     chunks.push(pets.slice(i, i + 2));
   }
 
+  const renderItem = (item: any) => {
+    const images = uploadImagesPet(item.image_url);
+    const isAdopted = item.adopted === true;
+
+    return (
+      <div
+        key={item.id}
+        className={`bg-white p-5 rounded-lg shadow-md w-[48%] flex-shrink-0 flex flex-col justify-between ${isAdopted ? "opacity-50" : ""
+          }`}
+      >
+        {images.length > 0 && (
+          <img
+            src={images[0]}
+            alt={item.name}
+            className="w-full h-96 object-cover rounded-lg bg-[#F5F5F5] mb-4"
+          />
+        )}
+
+        <h2 className="font-bold text-xl text-black mb-3">{item.name}</h2>
+
+        {isAdopted ? (
+          <p className="text-green-700 font-bold text-center py-2">
+            🐾 Esta mascota ya fue adoptada
+          </p>
+        ) : (
+          <div className="flex gap-3 mt-auto">
+            <button
+              className="bg-[#B7C979] flex-1 py-3 rounded-lg font-bold hover:bg-[#e0c37b] transition-colors text-black"
+              onClick={() =>
+                router.push(
+                  `/pet/updatepet?pet=${encodeURIComponent(JSON.stringify(item))}`
+                )
+              }
+            >
+              Editar
+            </button>
+
+            <button
+              className="bg-[#E8B4B4] flex-1 py-3 rounded-lg font-bold hover:bg-[#9b332f] transition-colors text-black"
+              onClick={() => openDeleteModal(item.id)}
+            >
+              Eliminar
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#FDF8F0]">
-
-      
       <div className="bg-[#B7C979] py-6 shadow-md">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-
           <button
             onClick={() => router.back()}
             className="text-white font-bold hover:underline"
@@ -69,46 +115,11 @@ export default function MyPetsScreen() {
           </p>
         ) : (
           chunks.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex flex-wrap justify-center gap-6 mb-8">
-              {row.map((item) => {
-                const images = uploadImagesPet(item.image_url);
-                return (
-                  <div
-                    key={item.id}
-                    className="bg-white p-5 rounded-lg shadow-md w-[48%] flex-shrink-0 flex flex-col justify-between"
-                  >
-                    {images.length > 0 && (
-                      <img
-                        src={images[0]}
-                        alt={item.name}
-                        className="w-full h-96 object-cover rounded-lg bg-[#F5F5F5] mb-4"
-                      />
-                    )}
-
-                    <h2 className="font-bold text-xl text-black mb-3">
-                      {item.name}
-                    </h2>
-
-                    <div className="flex gap-3 mt-auto">
-                      <button
-                        className="bg-[#F3D58D] flex-1 py-3 rounded-lg font-bold hover:bg-[#e0c37b] transition-colors text-black"
-                        onClick={() =>
-                          router.push(`/pet/updatepet?pet=${encodeURIComponent(JSON.stringify(item))}`)
-                        }
-                      >
-                        Editar
-                      </button>
-
-                      <button
-                        className="bg-[#B7413E] flex-1 py-3 rounded-lg font-bold hover:bg-[#9b332f] transition-colors text-black"
-                        onClick={() => openDeleteModal(item.id)}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+            <div
+              key={rowIndex}
+              className="flex flex-wrap justify-center gap-6 mb-8"
+            >
+              {row.map((item) => renderItem(item))}
             </div>
           ))
         )}

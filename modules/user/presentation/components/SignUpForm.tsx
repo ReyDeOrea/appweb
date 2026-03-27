@@ -57,7 +57,6 @@ export default function SignUp() {
   return (
     <div className="min-h-screen bg-gray-100">
 
-      {/* HEADER */}
       <div className="bg-[#B7C979] py-6 shadow-md">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
 
@@ -79,7 +78,6 @@ export default function SignUp() {
         </div>
       </div>
 
-      {/* IMAGEN */}
       <div className="flex justify-center mt-6">
         <Image
           src="/images/DogAndCat.jpeg"
@@ -90,7 +88,6 @@ export default function SignUp() {
         />
       </div>
 
-      {/* CONTENIDO */}
       <div className="max-w-md mx-auto px-5 py-6">
 
         <p className="text-center text-gray-900 font-semibold mb-5">
@@ -153,7 +150,6 @@ export default function SignUp() {
 
         </div>
 
-        {/* BOTÓN */}
         <div className="mt-6 flex items-center justify-center gap-3">
 
           <Image
