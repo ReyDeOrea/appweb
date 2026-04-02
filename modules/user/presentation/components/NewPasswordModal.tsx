@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect } from "react"; 
 
 interface Props {
   visible: boolean;
@@ -26,8 +28,9 @@ export default function NewPasswordModal({ visible, loading, onClose, onSubmit }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-2xl p-6 w-11/12 max-w-md flex flex-col items-center">
-        <h2 className="text-center text-gray-600 mb-5 text-sm">
+      <div className="bg-white rounded-2xl p-6 w-11/12 max-w-md flex flex-col items-center shadow-lg">
+        
+        <h2 className="text-center text-gray-900 font-semibold mb-5 text-base">
           Ingresa tu nueva contraseña
         </h2>
 
@@ -36,7 +39,9 @@ export default function NewPasswordModal({ visible, loading, onClose, onSubmit }
           placeholder="Nueva contraseña"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full border border-[#B7C979] rounded-xl px-4 py-3 mb-4 
+          text-gray-900 placeholder:text-gray-500
+          focus:outline-none focus:ring-2 focus:ring-[#B7C979]"
         />
 
         <input
@@ -44,14 +49,18 @@ export default function NewPasswordModal({ visible, loading, onClose, onSubmit }
           placeholder="Confirmar nueva contraseña"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full border border-yellow-300 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full border border-[#B7C979] rounded-xl px-4 py-3 mb-4 
+          text-gray-900 placeholder:text-gray-500
+          focus:outline-none focus:ring-2 focus:ring-[#B7C979]"
         />
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className={`w-full rounded-xl py-3 mb-3 text-white font-bold ${
-            loading ? "bg-yellow-300 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"
+          className={`w-full rounded-xl py-3 mb-3 text-white font-bold transition-colors ${
+            loading
+              ? "bg-[#B7C979]/60 cursor-not-allowed"
+              : "bg-[#B7C979] hover:bg-[#9FB866]"
           }`}
         >
           {loading ? "Cargando..." : "Actualizar contraseña"}
@@ -59,10 +68,11 @@ export default function NewPasswordModal({ visible, loading, onClose, onSubmit }
 
         <button
           onClick={onClose}
-          className="text-center text-gray-500 underline font-bold"
+          className="text-gray-700 underline font-semibold hover:text-gray-900"
         >
           Cancelar
         </button>
+
       </div>
     </div>
   );
