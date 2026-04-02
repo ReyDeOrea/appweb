@@ -276,20 +276,21 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
         </div>
       </div>
 
-      <div>
-        <h3 className="text-[#7E6950] font-semibold mb-3 text-lg">
-          🐾 Mascotas disponibles ({filteredPets.length})
-        </h3>
-        <div className="flex overflow-x-auto gap-4 pb-6 scrollbar-hide">
-          {filteredPets.length > 0 ? (
-            filteredPets.map(renderPet)
-          ) : (
-            <div className="w-full text-center py-10 text-[#7E6950]">
-              No se encontraron mascotas
-            </div>
-          )}
-        </div>
+  <div>
+  <h3 className="text-[#7E6950] font-semibold mb-3 text-lg">
+    🐾 Mascotas disponibles ({filteredPets.length})
+  </h3>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-6">
+    {filteredPets.length > 0 ? (
+      filteredPets.map(renderPet)
+    ) : (
+      <div className="w-full text-center py-10 text-[#7E6950]">
+        No se encontraron mascotas
       </div>
+    )}
+  </div>
+</div>
 
       <FilterModal
         visible={filterOpen}
