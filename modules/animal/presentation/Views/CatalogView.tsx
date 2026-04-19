@@ -197,22 +197,28 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
     );
 
   return (
- <div className="min-h-screen bg-[#FDF8F0] p-4 md:p-6 ml-[200px]">
-
+ <div className="min-h-screen bg-[#FDF8F0]">
     <ModalMenu
       user={user}
       setUser={setUser}
     />
 
-    <div className="flex-1 w-full p-4 md:p-6">
-     
-     <div className="bg-[#B7C979] w-full p-4 mb-6 flex items-center justify-between rounded-xl">
-       <h2 className="text-white text-2xl font-bold flex items-center gap-2">
-       Animaland
-       <FaPaw className="text-white text-3xl" />
-  </h2>
+    
+    <div className="bg-[#B7C979] py-6 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+        <div className="w-[70px]" />
+        <div className="flex items-center gap-3">
+          <h1 className="text-white font-bold text-3xl md:text-4xl">
+            Animaland
+          </h1>
+          <FaPaw className="text-white text-3xl md:text-4xl" />
+        </div>
+        <div className="w-[70px]" />
       </div>
+    </div>
 
+    
+    <div className="p-4 md:p-6 ml-[200px]">
       <div className="bg-[#E5DCCC] rounded-xl p-2 mb-6 flex items-center border border-[#7E6950]">
          <button className="text-[#5B4000] px-4 py-2 hover:bg-[#D9C9A3] rounded-lg transition-colors">
        <IoIosSearch className="text-3xl"/>

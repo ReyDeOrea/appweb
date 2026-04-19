@@ -5,7 +5,7 @@ import { validateLoginData } from "../../application/valideteLoginData";
 import { loginUser } from "../../application/loginUser";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { FaUser, FaLock, FaPaw } from "react-icons/fa";
+import { FaUser, FaLock, FaPaw, FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -13,6 +13,7 @@ export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -68,6 +69,8 @@ export default function LoginForm() {
         </p>
 
         <div className="space-y-3">
+          
+          {/* Usuario */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaUser style={{ color: "#D4B37A", fontSize: "20px" }} />
             <input
@@ -79,15 +82,25 @@ export default function LoginForm() {
             />
           </div>
 
+          {/* Contraseña */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaLock style={{ color: "#D4B37A", fontSize: "20px" }} />
+
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Contraseña"
               className="ml-3 flex-1 outline-none text-gray-900"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="ml-2 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash  />}
+            </button>
           </div>
 
         </div>
