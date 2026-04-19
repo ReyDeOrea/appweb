@@ -6,7 +6,7 @@ import { useState } from "react";
 import { validateSignUpData } from "../../application/validateSingUpData";
 import { registerUser } from "../../application/registerUser";
 import { checkUserExists } from "../../application/checkUserExists";
-import { FaUser, FaPhone, FaEnvelope, FaLock, FaPaw } from "react-icons/fa";
+import { FaUser, FaPhone, FaEnvelope, FaLock, FaPaw, FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignUp() {
   const router = useRouter();
@@ -18,6 +18,9 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleRegister = async () => {
     try {
@@ -67,6 +70,7 @@ export default function SignUp() {
             ← Volver
           </button>
 
+{/*encabezado*/}
           <div className="flex items-center gap-3">
             <h1 className="text-white font-bold text-3xl md:text-4xl">
               Animaland
@@ -96,6 +100,7 @@ export default function SignUp() {
 
         <div className="space-y-3">
 
+          {/* Usuario */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaUser style={{ color: "#D4B37A", fontSize: "20px" }} />
             <input
@@ -106,6 +111,7 @@ export default function SignUp() {
             />
           </div>
 
+          {/* Teléfono */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaPhone style={{ color: "#D4B37A", fontSize: "20px" }} />
             <input
@@ -116,6 +122,7 @@ export default function SignUp() {
             />
           </div>
 
+          {/* Email */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaEnvelope style={{ color: "#D4B37A", fontSize: "20px" }} />
             <input
@@ -126,26 +133,46 @@ export default function SignUp() {
             />
           </div>
 
+          {/* Contraseña */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaLock style={{ color: "#D4B37A", fontSize: "20px" }} />
+
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               className="ml-3 flex-1 outline-none text-gray-900"
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="ml-2 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? < FaEye/> : <FaEyeSlash />}
+            </button>
           </div>
 
+          {/* Confirmar contraseña */}
           <div className="flex items-center border border-gray-300 rounded-lg px-3 py-3 bg-white">
             <FaLock style={{ color: "#D4B37A", fontSize: "20px" }} />
+
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               className="ml-3 flex-1 outline-none text-gray-900"
               placeholder="Confirmar contraseña"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="ml-2 text-gray-500 hover:text-gray-700"
+            >
+              {showConfirmPassword ? < FaEye/> : <FaEyeSlash />}
+            </button>
           </div>
 
         </div>

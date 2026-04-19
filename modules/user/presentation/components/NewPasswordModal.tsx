@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react"; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface Props {
   visible: boolean;
@@ -12,11 +13,15 @@ interface Props {
 export default function NewPasswordModal({ visible, loading, onClose, onSubmit }: Props) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   useEffect(() => {
     if (!visible) {
       setNewPassword("");
       setConfirmPassword("");
+      setShowNewPassword(false);
+      setShowConfirmPassword(false);
     }
   }, [visible]);
 
@@ -34,25 +39,47 @@ export default function NewPasswordModal({ visible, loading, onClose, onSubmit }
           Ingresa tu nueva contraseña
         </h2>
 
-        <input
-          type="password"
-          placeholder="Nueva contraseña"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full border border-[#B7C979] rounded-xl px-4 py-3 mb-4 
-          text-gray-900 placeholder:text-gray-500
-          focus:outline-none focus:ring-2 focus:ring-[#B7C979]"
-        />
+       {/* Nueva contraseñaa */}
+        <div className="w-full relative mb-4">
+          <input
+            type={showNewPassword ? "text" : "password"}
+            placeholder="Nueva contraseña"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full border border-[#B7C979] rounded-xl px-4 py-3 pr-10 
+            text-gray-900 placeholder:text-gray-500
+            focus:outline-none focus:ring-2 focus:ring-[#B7C979]"
+          />
 
-        <input
-          type="password"
-          placeholder="Confirmar nueva contraseña"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full border border-[#B7C979] rounded-xl px-4 py-3 mb-4 
-          text-gray-900 placeholder:text-gray-500
-          focus:outline-none focus:ring-2 focus:ring-[#B7C979]"
-        />
+          <button
+            type="button"
+            onClick={() => setShowNewPassword(!showNewPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showNewPassword ? <FaEye /> : <FaEyeSlash />}
+          </button>
+        </div>
+
+        {/* Confirmar contraseña */}
+        <div className="w-full relative mb-4">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Confirmar nueva contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full border border-[#B7C979] rounded-xl px-4 py-3 pr-10 
+            text-gray-900 placeholder:text-gray-500
+            focus:outline-none focus:ring-2 focus:ring-[#B7C979]"
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+          </button>
+        </div>
 
         <button
           onClick={handleSubmit}
