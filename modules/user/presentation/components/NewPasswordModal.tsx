@@ -39,7 +39,7 @@ export default function NewPasswordModal({ visible, loading, onClose, onSubmit }
           Ingresa tu nueva contraseña
         </h2>
 
-       {/* Nueva contraseña */}
+       {/* Nueva contraseñaa */}
         <div className="w-full relative mb-4">
           <input
             type={showNewPassword ? "text" : "password"}

@@ -41,6 +41,7 @@ export default function LoginForm() {
             ← Volver
           </button>
 
+{/*encabezado*/}
           <div className="flex items-center gap-3">
             <h1 className="text-white font-bold text-3xl md:text-4xl">
               Animaland

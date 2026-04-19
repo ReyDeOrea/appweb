@@ -203,7 +203,7 @@ const bannerImages: BannerItem[] = [...staticBanners, ...adoptedBanners];
       setUser={setUser}
     />
 
-    
+    {/*encabezado*/}
     <div className="bg-[#B7C979] py-6 shadow-md">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
         <div className="w-[70px]" />
