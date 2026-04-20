@@ -189,6 +189,7 @@ export default function AdoptionForm() {
                     Teléfono
                   </label>
                   <input
+                    type="number"
                     className={inputStyle}
                     value={telefono}
                     onChange={(e) => setTelefono(e.target.value)}
