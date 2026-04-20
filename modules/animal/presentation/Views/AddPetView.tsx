@@ -288,7 +288,7 @@ return (
                   Contacto
                 </h3>
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Número de teléfono"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
